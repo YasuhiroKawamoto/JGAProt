@@ -2,21 +2,19 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-
 /// <summary>
 /// エレメント
 /// </summary>
-public class Element : MonoBehaviour {
-
+public class Element : MonoBehaviour
+{
 
     [SerializeField]
-    float Energy;//保有エネルギー量
+    double Energy;//保有エネルギー量
 
-    //[SerializeField]
-    //float ChargeAmount;//チャージ量（秒間）
 
     GameObject EM;
 
+    [SerializeField]
     private List<GameObject> SendTargetList = new List<GameObject>();//送り先リスト
 
     private int SendTargetCount;
@@ -28,31 +26,27 @@ public class Element : MonoBehaviour {
 
     TextMesh MeshText;//テキストメッシュの内容
 
-    //LineRenderer Line;//線
 
 
 
     // Use this for initialization
-    void Start () {
+    void Start()
+    {
         state = 0;
 
         SendTargetList.Clear();
 
-        //Line = gameObject.GetComponent<LineRenderer>();
-        //Line.SetWidth(0.2f,0.2f);
-       
-        //Line.SetPosition(0, gameObject.transform.position);
-        //Line.SetPosition(1, gameObject.transform.position);
+
         MeshText = gameObject.GetComponentInChildren<TextMesh>();
         EM = GameObject.Find("EnergyManager");
 
-        
-       
+
+
 
     }
-	
-	// Update is called once per frame
-	void Update ()
+
+    // Update is called once per frame
+    void Update()
     {
 
 
@@ -60,27 +54,30 @@ public class Element : MonoBehaviour {
         //送る対象がある場合
         if (SendTargetList.Count != 0)
         {
+            double Chage = EM.GetComponent<EnergyManager>().GetChargeAmount();
 
             //エナジーがある限り送りつつける
-            if (Energy > 0.0f)
+            if (Energy > 0.0f && state != 0)
             {
 
-                float Chage = EM.GetComponent<EnergyManager>().GetChargeAmount();
+
+
+                Energy -= Chage * SendTargetCount * Time.deltaTime;
 
                 foreach (GameObject obj in SendTargetList)
                 {
+
                     SendTargetCount = SendTargetList.Count;
-                    ////ラインの先端処理（セット）
-                    //Line.SetPosition(SendTargetList.IndexOf(obj), obj.transform.position);
+
                     obj.GetComponent<Element>().ChageEnergy(Chage * Time.deltaTime);
                 }
 
-                Energy -= Chage * SendTargetCount * Time.deltaTime;
+
 
             }
             else
             {
-
+                Energy = 0.0f;
                 // リスト内処理
                 foreach (GameObject obj in SendTargetList)
                 {
@@ -108,16 +105,11 @@ public class Element : MonoBehaviour {
                 }
 
                 ChangeState(0);
-                Energy = 0.0f;
-
-
 
 
             }
 
         }
-       
-
         //表示エネルギー量の更新
         MeshText.text = Energy.ToString("f2");
 
@@ -127,7 +119,7 @@ public class Element : MonoBehaviour {
     /// エネルギー取得
     /// </summary>
     /// <returns></returns>
-    public float GetEnergy()
+    public double GetEnergy()
     {
         return Energy;
     }
@@ -137,14 +129,15 @@ public class Element : MonoBehaviour {
     /// エネルギー加算、減算
     /// </summary>
     /// <param name="chage"></param>
-    public void ChageEnergy(float chage)
+    public void ChageEnergy(double chage)
     {
         Energy += chage;
         if (Energy < 0)
         {
             Energy = 0;
+
         }
-        
+
     }
 
 
@@ -159,23 +152,23 @@ public class Element : MonoBehaviour {
         //状態に応じて色変更
         switch (state)
         {
-            case 0:
-                //ラインの先端処理（収納）
-                //Line.SetPosition(1, gameObject.transform.position);
-                //端数処理、誤差修正
-                //Energy = Mathf.Round(Energy);
+            case 0://非指定
+                   //送り先リストの削除
+                SendTargetList.Clear();
+                //エネルギーの端数処理（暫定）
+                Energy = System.Math.Round(Energy, System.MidpointRounding.AwayFromZero);
                 this.GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, 1);
-              
-                
+
+
                 break;
-            case 1:
+            case 1://送り
                 this.GetComponent<SpriteRenderer>().color = new Color(1, 0, 0, 1);
-               
+
                 break;
 
-            case 2:
+            case 2://受け
                 this.GetComponent<SpriteRenderer>().color = new Color(1, 0, 1, 1);
-            
+
                 break;
         }
     }
@@ -189,8 +182,8 @@ public class Element : MonoBehaviour {
     {
         Debug.Log(SendTargetList.Count);
         SendTargetList.Add(obj);//送り先リストに追加
-       
-        //SendTarget = obj;
+
+
     }
 
     public bool IsTarget()
