@@ -36,8 +36,6 @@ public class EnemySpawn : MonoBehaviour {
 
         timeOut += Time.deltaTime;
 
-        Debug.Log(timeOut);
-
         if (setTime <= timeOut)
         {
             SpawnEnemy();
