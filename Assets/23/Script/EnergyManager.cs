@@ -19,7 +19,6 @@ namespace Play.Element
         [SerializeField]
         private float _chargeAmount ;//チャージ量（秒間）
 
-
         [SerializeField]
         GameObject _senderElement;//エレメント（送る側）
 
@@ -63,13 +62,7 @@ namespace Play.Element
                 else
                 {
                     ResetElement();//選択状態をリセット
-
-
                 }
-
-
-
-
             }
             if (Input.GetMouseButtonUp(0))//離したとき
             {
@@ -94,7 +87,9 @@ namespace Play.Element
                     //送り手と違うオブジェクト上で離した場合
                     if (hit.collider.gameObject != _senderElement)
                     {
+                        
                         _receiverElement = hit.collider.gameObject;//エレメント（受ける側）
+                        Debug.Log(_receiverElement.ToString());
                         if (_receiverElement.GetComponent<Element>().GetState() == 0 || _receiverElement.GetComponent<Element>().GetState() == 2)
                         {
                             if (_senderElement)
@@ -111,8 +106,6 @@ namespace Play.Element
 
                 ResetElement();//選択状態をリセット
             }
-
-
         }
 
         /// <summary>

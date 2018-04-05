@@ -8,6 +8,8 @@ using UnityEngine;
 /// 
 namespace Play.Element
 {
+   
+
     public class Element : MonoBehaviour
     {
 
@@ -16,6 +18,9 @@ namespace Play.Element
 
         [SerializeField]
         private double _capacity;//エネルギー上限
+
+        [SerializeField]
+        private int _durability;//耐久度
 
 
         private GameObject _energyManager;//エナジーマネージャー
@@ -39,6 +44,9 @@ namespace Play.Element
         void Start()
         {
 
+            //耐久度初期値設定
+            _durability = 100;
+            //最大容量を設定
             _capacity = 100;
             //初期状態を「非設定」に指定
             _state = 0;
@@ -153,6 +161,49 @@ namespace Play.Element
         }
 
 
+        public void ReceiveDamage(int damage)
+        {
+            if (_energy > 0)
+            {
+                _energy -= damage;
+
+            }
+            else
+            {
+                _durability -= damage;
+
+                if (_durability < 70)
+                {
+                    _capacity = 70.00;
+                }
+
+                if (_durability < 50)
+                {
+                    _capacity = 50.00;
+                }
+
+                if (_durability < 30)
+                {
+                    _capacity = 30.00;
+                }
+
+                if (_durability < 0)
+                {
+
+                    ChangeState(3);
+                }
+
+            }
+
+            
+
+            
+         
+
+
+        }
+
+
         /// <summary>
         /// エネルギー加算、減算
         /// </summary>
@@ -200,17 +251,18 @@ namespace Play.Element
                     _sendTargetList.Clear();
                     //エネルギーの端数処理（暫定）
                     _energy = System.Math.Round(_energy, System.MidpointRounding.AwayFromZero);
-                    //this.GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, 1);
-
 
                     break;
                 case 1://送り
-                    //this.GetComponent<SpriteRenderer>().color = new Color(1, 0, 0, 1);
-
+                   
                     break;
 
                 case 2://受け
-                    //this.GetComponent<SpriteRenderer>().color = new Color(1, 0, 1, 1);
+                    
+
+                    break;
+
+                case 3://壊れ
 
                     break;
             }
@@ -226,7 +278,7 @@ namespace Play.Element
 
             //送り先リストに追加
             _sendTargetList.Add(obj);
-            //Debug.Log(SendTargetList.Count);
+           
 
         }
 

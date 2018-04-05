@@ -21,7 +21,7 @@ namespace Play.Element
         {
 
             //表示エネルギー量の更新
-            _meshText.text = GetComponentInParent<Element>().GetEnergy().ToString("f2");
+            _meshText.text = GetComponentInParent<Element>().GetEnergy().ToString("f2")+("/")+ GetComponentInParent<Element>().GetCapacity().ToString("f0");
 
         }
     }
