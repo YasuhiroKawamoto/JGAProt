@@ -8,8 +8,6 @@ using UnityEngine;
 /// 
 namespace Play.Element
 {
-   
-
     public class Element : MonoBehaviour
     {
 

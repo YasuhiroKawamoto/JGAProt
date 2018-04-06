@@ -24,10 +24,10 @@ namespace Play.Element
         private float _chargeAmount;//チャージ量（秒間）
 
         [SerializeField]
-        GameObject _senderElement;//エレメント（送る側）
+        Element _senderElement;//エレメント（送る側）
 
         [SerializeField]
-        GameObject _receiverElement;//エレメント（受ける側）
+        Element _receiverElement;//エレメント（受ける側）
 
         [SerializeField]
         GameObject _trajectoryManager;
@@ -97,7 +97,7 @@ namespace Play.Element
 
                 if (hit)
                 {
-                    _senderElement = hit.collider.gameObject;//エレメント（送る側）
+                    _senderElement = hit.collider.GetComponent<Element>();//エレメント（送る側）
                     _trajectoryManager.GetComponent<Trajectory.Trajectory>().StartTrajectory(_senderElement);
 
                 }
@@ -121,14 +121,14 @@ namespace Play.Element
                     if (hit.collider.gameObject != _senderElement && !hit.collider.gameObject.GetComponent<Element>().IsBase())
                     {
 
-                        _receiverElement = hit.collider.gameObject;//エレメント（受ける側）
+                        _receiverElement = hit.collider.GetComponent<Element>();//エレメント（受ける側）
                        
                         if (_receiverElement.GetComponent<Element>().GetState() == (int)State.WAIT || _receiverElement.GetComponent<Element>().GetState() == State.RECIEVE)
                         {
                             if (_senderElement)
                             {
                                 _senderElement.gameObject.GetComponent<Element>().ChangeState(State.SEND);//エレメントの状態を「送り」に指定
-                                _senderElement.GetComponent<Element>().SetTarget(_receiverElement);//送り手に受け手を設定
+                                _senderElement.GetComponent<Element>().SetTarget(_receiverElement.gameObject);//送り手に受け手を設定
                                 _trajectoryManager.GetComponent<Trajectory.Trajectory>().EndTrajectory();
 
                                 hit.collider.gameObject.GetComponent<Element>().ChangeState(State.RECIEVE);//エレメントの状態を「受け」に指定

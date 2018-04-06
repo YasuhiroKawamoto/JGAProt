@@ -394,7 +394,7 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1001 &1258059911
+--- !u!1001 &1199930643
 Prefab:
   m_ObjectHideFlags: 0
   serializedVersion: 2
@@ -433,20 +433,14 @@ Prefab:
       propertyPath: m_RootOrder
       value: 10
       objectReference: {fileID: 0}
-    - target: {fileID: 114261077929172778, guid: d2a8af7692f92dd4b9b095e1955ff86d,
-        type: 2}
-      propertyPath: _element
-      value: 
-      objectReference: {fileID: 1294575327}
-    m_RemovedComponents: []
+    - target: {fileID: 1091652583318016, guid: d2a8af7692f92dd4b9b095e1955ff86d, type: 2}
+      propertyPath: m_Name
+      value: TrajectoryMan
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: 114261077929172778, guid: d2a8af7692f92dd4b9b095e1955ff86d, type: 2}
   m_ParentPrefab: {fileID: 100100000, guid: d2a8af7692f92dd4b9b095e1955ff86d, type: 2}
   m_IsPrefabParent: 0
---- !u!114 &1294575327 stripped
-MonoBehaviour:
-  m_PrefabParentObject: {fileID: 114828654979305330, guid: 835b42123fb375c41844d3e6ef880032,
-    type: 2}
-  m_PrefabInternal: {fileID: 19208665}
-  m_Script: {fileID: 11500000, guid: 8626a2141f8a30b4ebd746b853aeed63, type: 3}
 --- !u!1001 &1346975077
 Prefab:
   m_ObjectHideFlags: 0
@@ -651,6 +645,26 @@ Prefab:
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 81e7918188ae8434f92fe534ffbea0b1, type: 2}
   m_IsPrefabParent: 0
+--- !u!1 &1486504386 stripped
+GameObject:
+  m_PrefabParentObject: {fileID: 1091652583318016, guid: d2a8af7692f92dd4b9b095e1955ff86d,
+    type: 2}
+  m_PrefabInternal: {fileID: 1199930643}
+--- !u!114 &1486504387
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1486504386}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4cb5930fe59883742b6c33d440c168ef, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _plot: {fileID: 1053301319403488, guid: a7d1273195c08b440992a45563415d28, type: 2}
+  _interval: 0.5
+  _attack: {fileID: 114153622860775520, guid: 759898893613a9541a68ba1a1446820f, type: 2}
+  _attackDiff: 0.05
 --- !u!1 &1519344630
 GameObject:
   m_ObjectHideFlags: 0
