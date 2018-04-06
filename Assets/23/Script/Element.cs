@@ -14,6 +14,15 @@ namespace Play.Element
     {
 
         [SerializeField]
+        private bool _isBase;//ベースか否か
+
+        [SerializeField]
+        private bool _isRecovery;//回復中か
+
+        [SerializeField]
+        private double _recoveryTime;//回復時間
+
+        [SerializeField]
         private double _energy;//保有エネルギー量
 
         [SerializeField]
@@ -35,7 +44,23 @@ namespace Play.Element
         [SerializeField]
         private int _state;//状態（0:非選択時  1:送り　　2:受け）
 
-       
+
+        [SerializeField]
+        private Sprite _normalSprite;//通常時の画像
+
+        [SerializeField]
+        private Sprite _damageSprite1;//ダメージ深度1の画像
+
+        [SerializeField]
+        private Sprite _damageSprite2;//ダメージ深度2の画像
+
+        [SerializeField]
+        private Sprite _damageSprite3;//ダメージ深度3の画像
+
+        [SerializeField]
+        private Sprite _breakSprite;//破壊状態の画像
+
+
 
 
 
@@ -43,22 +68,23 @@ namespace Play.Element
         // Use this for initialization
         void Start()
         {
-
+            //イラストをnormalに指定
+            if (!_isBase)
+            {
+                gameObject.GetComponent<SpriteRenderer>().sprite = _normalSprite;
+            }
             //耐久度初期値設定
             _durability = 100;
             //最大容量を設定
             _capacity = 100;
+            //回復所要時間を設定
+            _recoveryTime = 10.00;
             //初期状態を「非設定」に指定
             _state = 0;
             //送り先リストのクリア
-            _sendTargetList.Clear();
-
-           
+            _sendTargetList.Clear();         
             //エナジーマネージャーのセット
             _energyManager = GameObject.Find("EnergyManager");
-
-
-
 
         }
 
@@ -66,87 +92,115 @@ namespace Play.Element
         void Update()
         {
 
-
-
-            //送る対象がある場合
-            if (_sendTargetList.Count != 0 && _state != 0)
+            //被弾テスト
+            if (Input.GetMouseButtonDown(1))
             {
-                //チャージ倍率の設定
-                double chage = _energyManager.GetComponent<EnergyManager>().GetChargeAmount();
+                ReceiveDamage(10);
+            }
 
-                //エナジーがある限り送りつつける
-                if (_energy > 0.0f)
+
+            if (!_isRecovery)
+            {
+
+
+                //送る対象がある場合
+                if (_sendTargetList.Count != 0 && _state != 0)
                 {
+                    //チャージ倍率の設定
+                    double chage = _energyManager.GetComponent<EnergyManager>().GetChargeAmount();
 
-                    //送り側のエネルギー減算（送り先の分だけ減少率増加）
-                    _energy -= chage * _sendTargetCount * Time.deltaTime;
-
-
-
-                    foreach (GameObject obj in _sendTargetList)
+                    //エナジーがある限り送りつつける
+                    if (_energy > 0.0f)
                     {
-                        //送り先数の更新
-                        _sendTargetCount = _sendTargetList.Count;
-                        if (obj.GetComponent<Element>().GetState() != 0)
+
+                        //送り側のエネルギー減算（送り先の分だけ減少率増加）
+                        _energy -= chage * _sendTargetCount * Time.deltaTime;
+
+
+
+                        foreach (GameObject obj in _sendTargetList)
                         {
-                            obj.GetComponent<Element>().ChageEnergy(chage * Time.deltaTime);
+                            //送り先数の更新
+                            _sendTargetCount = _sendTargetList.Count;
+                            if (obj.GetComponent<Element>().GetState() != 0)
+                            {
+                                obj.GetComponent<Element>().ChageEnergy(chage * Time.deltaTime);
+                            }
+                            else
+                            {
+                                _exclusionObj = obj;
+                            }
                         }
-                        else
+
+                        if (_exclusionObj)
                         {
-                            _exclusionObj = obj;
+                            //対象をリストから除く
+                            _sendTargetList.Remove(_exclusionObj);
+                            _exclusionObj = null;
+                            //送り先数の更新
+                            _sendTargetCount = _sendTargetList.Count;
+                            Debug.Log(_sendTargetList.Count.ToString());
                         }
+
+
+                    }
+                    else
+                    {
+                        _energy = 0.0f;
+                        // リスト内処理
+                        foreach (GameObject obj in _sendTargetList)
+                        {
+                            if (obj.GetComponent<Element>().IsTarget())
+                            {
+                                //対象の状態を「送り」に変更
+                                obj.GetComponent<Element>().ChangeState(1);
+                            }
+                            else
+                            {
+                                //対象の状態を「非選択」に変更
+                                obj.GetComponent<Element>().ChangeState(0);
+                                _exclusionObj = obj;
+                            }
+                        }
+
+                        if (_exclusionObj)
+                        {
+                            //対象をリストから除く
+                            _sendTargetList.Remove(_exclusionObj);
+                            _exclusionObj = null;
+                        }
+
+                        ChangeState(0);
+
                     }
 
-                    if (_exclusionObj)
+                    if (_sendTargetCount == 0)
                     {
-                        //対象をリストから除く
-                        _sendTargetList.Remove(_exclusionObj);
-                        _exclusionObj = null;
-                        //送り先数の更新
-                        _sendTargetCount = _sendTargetList.Count;
-                        Debug.Log(_sendTargetList.Count.ToString());
+                        ChangeState(0);
                     }
 
-
-                }
-                else
-                {
-                    _energy = 0.0f;
-                    // リスト内処理
-                    foreach (GameObject obj in _sendTargetList)
-                    {
-                        if (obj.GetComponent<Element>().IsTarget())
-                        {
-                            //対象の状態を「送り」に変更
-                            obj.GetComponent<Element>().ChangeState(1);
-                        }
-                        else
-                        {
-                            //対象の状態を「非選択」に変更
-                            obj.GetComponent<Element>().ChangeState(0);
-                            _exclusionObj = obj;
-                        }
-                    }
-
-                    if (_exclusionObj)
-                    {
-                        //対象をリストから除く
-                        _sendTargetList.Remove(_exclusionObj);
-                        _exclusionObj = null;
-                    }
-
-                    ChangeState(0);
-
-                }
-
-                if (_sendTargetCount == 0)
-                {
-                    ChangeState(0);
                 }
 
             }
-          
-         
+            else
+            {
+                _recoveryTime -= 1.00 *Time.deltaTime;
+
+                if (_recoveryTime < 0.00)
+                {
+                    _durability = 100;
+                    _capacity = 100;
+                    if (!_isBase)
+                    {
+                        gameObject.GetComponent<SpriteRenderer>().sprite = _normalSprite;
+                    }
+                    ChangeState(0);
+
+                    _isRecovery = false;
+
+                }
+
+            }
             
 
         }
@@ -160,45 +214,68 @@ namespace Play.Element
             return _energy;
         }
 
-
+        /// <summary>
+        /// 被ダメージ
+        /// </summary>
+        /// <param name="damage"></param>
         public void ReceiveDamage(int damage)
         {
             if (_energy > 0)
             {
                 _energy -= damage;
 
+                if (_energy < 0)
+                {
+                    _energy = 0.00;
+                }
+
             }
             else
             {
+                
                 _durability -= damage;
-
-                if (_durability < 70)
-                {
-                    _capacity = 70.00;
-                }
-
-                if (_durability < 50)
-                {
-                    _capacity = 50.00;
-                }
-
-                if (_durability < 30)
-                {
-                    _capacity = 30.00;
-                }
 
                 if (_durability < 0)
                 {
-
+                    //破壊状態にする
                     ChangeState(3);
+                    _capacity = 0.00;
+                    //イラストをbreakに指定
+                    if (!_isBase)
+                    {
+                        gameObject.GetComponent<SpriteRenderer>().sprite = _breakSprite;
+                    }
+                }
+                else if (_durability < 30)
+                {
+                    _capacity = 30.00;
+                    //イラストをbreakに指定
+                    if (!_isBase)
+                    {
+                        gameObject.GetComponent<SpriteRenderer>().sprite = _damageSprite3;
+                    }
+                }
+               
+                else if (_durability < 50)
+                {
+                    _capacity = 50.00;
+                    //イラストをbreakに指定
+                    if (!_isBase)
+                    {
+                        gameObject.GetComponent<SpriteRenderer>().sprite = _damageSprite2;
+                    }
+                }
+                else if (_durability < 70)
+                {
+                    _capacity = 70.00;
+                    //イラストをbreakに指定
+                    if (!_isBase)
+                    {
+                        gameObject.GetComponent<SpriteRenderer>().sprite = _damageSprite1;
+                    }
                 }
 
             }
-
-            
-
-            
-         
 
 
         }
@@ -263,6 +340,7 @@ namespace Play.Element
                     break;
 
                 case 3://壊れ
+                    _isRecovery = true;
 
                     break;
             }

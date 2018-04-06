@@ -22,7 +22,14 @@ namespace Play.Element
 
             double size =  gameObject.GetComponentInParent<Element>().GetEnergy()/gameObject.GetComponentInParent<Element>().GetCapacity();
 
-            _spriteRenderer.GetComponent<SpriteRenderer>().transform.localScale = new Vector3((float)size,(float)size,2);
+            if (size > 0)
+            {
+                _spriteRenderer.GetComponent<SpriteRenderer>().transform.localScale = new Vector3((float)size, (float)size, 1);
+            }
+            else
+            {
+                _spriteRenderer.GetComponent<SpriteRenderer>().transform.localScale = new Vector3(0.0f, 0.0f, 1);
+            }
         }
     }
 }
