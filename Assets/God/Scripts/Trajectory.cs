@@ -16,7 +16,6 @@ namespace Play.Trajectory
         private float _interval;
 
         // タップ開始エレメント
-        [SerializeField]
         private Element.Element _element;
 
         // 攻撃
@@ -50,27 +49,11 @@ namespace Play.Trajectory
         // Update is called once per frame
         void Update()
         {
-            // 仮処理====================================ここから
-            if (Input.GetMouseButtonDown(0))
-            {
-                StartTrajectory(_element.gameObject);
-            }
-
-            if (Input.GetMouseButtonUp(0))
-            {
-                EndTrajectory();
-            }
-
-            // 仮処理====================================ここまで
-
-
-
             // 軌跡継続条件を満たしていれば軌跡を辿る
             if (IsContinueTranjectory())
             {
                 Trajectry();
             }
-
         }
 
 
@@ -138,9 +121,10 @@ namespace Play.Trajectory
         /// 発生元エレメントを指定する関数
         /// </summary>
         /// <param name="element"></param>
-        public void StartTrajectory(GameObject element)
+        public void StartTrajectory(Element.Element element)
         {
-            _lastObj = element;
+            _element = element;
+            _lastObj = element.gameObject;
         }
 
         public int EndTrajectory()
