@@ -2,6 +2,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+
+/// <summary>
+/// 敵の基盤クラス
+/// </summary>
+
 public class EnemyBase : MonoBehaviour {
 
     //移動速度
@@ -10,7 +15,6 @@ public class EnemyBase : MonoBehaviour {
     protected float _attackInterval = 1.0f;
     //攻撃先エレメント
     protected GameObject nearestElement;
-
     //最小範囲
     float minDis = 100.0f;
     //範囲
@@ -38,7 +42,7 @@ public class EnemyBase : MonoBehaviour {
     {
         //エレメントを探し挿入するリスト
         GameObject[] Elements = GameObject.FindGameObjectsWithTag("Element");
-        //
+        //近いエレメントを探す処理
         foreach (GameObject element in Elements)
         {
             //距離を求める
@@ -64,5 +68,11 @@ public class EnemyBase : MonoBehaviour {
    {
         _HP -= damage;
    }
+
+    //撃破された情報を入れる
+    virtual protected void KillData()
+    {
+        EnemyManager.Instance.SetKills();
+    }
 
 }
