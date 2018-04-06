@@ -190,7 +190,7 @@ namespace Play.Element
             {
                 _energy = _capacity;
 
-                if (_state != State.WAIT)
+                if (_state == State.RECIEVE)
                 {
                     ChangeState(State.WAIT);
                 }

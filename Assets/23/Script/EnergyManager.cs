@@ -29,6 +29,9 @@ namespace Play.Element
         [SerializeField]
         GameObject _receiverElement;//エレメント（受ける側）
 
+        [SerializeField]
+        GameObject _trajectoryManager;
+
         private int _layerNo;//レイヤー番号（マウス判定用）
 
         private int _layerMask;//レイヤーマスク（マウス判定用）
@@ -38,6 +41,7 @@ namespace Play.Element
         // Use this for initialization
         void Start()
         {
+            _trajectoryManager = GameObject.Find("TrajectoryMan");
             //チャージ量設定
             _chargeAmount = 5;
             //レイヤーマスク作成
@@ -94,6 +98,7 @@ namespace Play.Element
                 if (hit)
                 {
                     _senderElement = hit.collider.gameObject;//エレメント（送る側）
+                    _trajectoryManager.GetComponent<Trajectory.Trajectory>().StartTrajectory(_senderElement);
 
                 }
                 else
@@ -124,6 +129,7 @@ namespace Play.Element
                             {
                                 _senderElement.gameObject.GetComponent<Element>().ChangeState(State.SEND);//エレメントの状態を「送り」に指定
                                 _senderElement.GetComponent<Element>().SetTarget(_receiverElement);//送り手に受け手を設定
+                                _trajectoryManager.GetComponent<Trajectory.Trajectory>().EndTrajectory();
 
                                 hit.collider.gameObject.GetComponent<Element>().ChangeState(State.RECIEVE);//エレメントの状態を「受け」に指定
                             }
