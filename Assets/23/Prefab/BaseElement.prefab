@@ -221,10 +221,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8626a2141f8a30b4ebd746b853aeed63, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _isBase: 1
+  _isRecovery: 0
+  _recoveryTime: 0
   _energy: 0
   _capacity: 0
+  _durability: 0
   _sendTargetList: []
   _state: 0
+  _normalSprite: {fileID: 0}
+  _damageSprite1: {fileID: 0}
+  _damageSprite2: {fileID: 0}
+  _damageSprite3: {fileID: 0}
+  _breakSprite: {fileID: 0}
 --- !u!212 &212376422173417614
 SpriteRenderer:
   m_ObjectHideFlags: 1
