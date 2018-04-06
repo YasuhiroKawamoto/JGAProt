@@ -31,6 +31,8 @@ namespace Play.Element
 
         [SerializeField]
         GameObject _trajectoryManager;
+        [SerializeField]
+        List<GameObject> _elementList;
 
         private int _layerNo;//レイヤー番号（マウス判定用）
 
@@ -41,6 +43,11 @@ namespace Play.Element
         // Use this for initialization
         void Start()
         {
+            foreach (GameObject obj in GameObject.FindGameObjectsWithTag("Element"))
+            {
+                _elementList.Add(obj);
+            }
+
             _trajectoryManager = GameObject.Find("TrajectoryMan");
             //チャージ量設定
             _chargeAmount = 5;
@@ -138,7 +145,7 @@ namespace Play.Element
                                 }
                                 else
                                 {
-                                   
+                                    _trajectoryManager.GetComponent<Trajectory.Trajectory>().DestroyTraject();
 
                                 }
                             }
@@ -146,6 +153,7 @@ namespace Play.Element
                     }
 
                 }
+                _trajectoryManager.GetComponent<Trajectory.Trajectory>().DestroyTraject();
 
                 ResetElement();//選択状態をリセット
             }
