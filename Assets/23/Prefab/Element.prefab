@@ -73,7 +73,7 @@ Transform:
   m_GameObject: {fileID: 1249394530206616}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0, y: 0, z: 1}
   m_Children: []
   m_Father: {fileID: 4527601014861228}
   m_RootOrder: 0
@@ -144,7 +144,7 @@ BoxCollider2D:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
     oldSize: {x: 1.7, y: 1.7}
-    newSize: {x: 0.2, y: 0.2}
+    newSize: {x: 1.7, y: 1.7}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
     adaptiveTiling: 0
@@ -197,11 +197,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8626a2141f8a30b4ebd746b853aeed63, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _isBase: 0
+  _isRecovery: 0
+  _recoveryTime: 0
   _energy: 0
   _capacity: 0
   _durability: 0
   _sendTargetList: []
   _state: 0
+  _normalSprite: {fileID: 21300000, guid: 3697019c0c0620c4f9dc9c3d72b24326, type: 3}
+  _damageSprite1: {fileID: 21300000, guid: 80396db78be15224b8587f8776c2c4fd, type: 3}
+  _damageSprite2: {fileID: 21300000, guid: 3b78130b1589a8446acd2685c49c5fef, type: 3}
+  _damageSprite3: {fileID: 21300000, guid: c71bfc69f5fbf564db5588de867b5f0f, type: 3}
+  _breakSprite: {fileID: 21300000, guid: 400506806088e0343a7205f35be299ec, type: 3}
 --- !u!114 &114919270521847644
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -335,12 +343,12 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 02127dff973860344b028767f4ff13c2, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 3697019c0c0620c4f9dc9c3d72b24326, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 0.2, y: 0.2}
+  m_Size: {x: 1.7, y: 1.7}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -379,12 +387,12 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 1
-  m_Sprite: {fileID: 21300000, guid: 02127dff973860344b028767f4ff13c2, type: 3}
-  m_Color: {r: 1, g: 0, b: 0, a: 1}
+  m_Sprite: {fileID: 21300000, guid: 79e31bb127b99954c922c0649bc69e8e, type: 3}
+  m_Color: {r: 1, g: 0, b: 0, a: 0.472}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 0.2, y: 0.2}
+  m_Size: {x: 1.7, y: 1.7}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
