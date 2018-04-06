@@ -2,54 +2,60 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Attack : MonoBehaviour {
-
-    // 発生元エレメント
-    public Element Parent
+namespace Play.Trajectory
+{
+    public class Attack : MonoBehaviour
     {
-        set;
-        get;
-    }
 
-    public int _index;
-    public int Index
-    {
-        set
+        // 発生元エレメント
+        public Element.Element Parent
         {
-            _index = value;
+            set;
+            get;
         }
- 
-    }
 
-    //// エフェクトの存在時間
-    //private float _time;
-    //public float Time
-    //{
-    //    set { _time = value; }
-    //    get { return _time; }
-    //}
-
-
-    // 破壊コンポーネント
-    [SerializeField]
-    private AutoDestroyer _ad;
-
-	// Use this for initialization
-	void Start () {
-		
-	}
-	
-	// Update is called once per frame
-	void Update () {
-
-        Debug.Log(Parent.GetEnergy());
-
-        if (Parent != null)
+        public int _index;
+        public int Index
         {
-            if (Parent.GetEnergy() <= 0.0)
+            set
             {
-                _ad.LifeTime = _index * 0.05f;
-                _ad.enabled = true;
+                _index = value;
+            }
+
+        }
+
+        //// エフェクトの存在時間
+        //private float _time;
+        //public float Time
+        //{
+        //    set { _time = value; }
+        //    get { return _time; }
+        //}
+
+
+        // 破壊コンポーネント
+        [SerializeField]
+        private AutoDestroyer _ad;
+
+        // Use this for initialization
+        void Start()
+        {
+
+        }
+
+        // Update is called once per frame
+        void Update()
+        {
+
+            Debug.Log(Parent.GetEnergy());
+
+            if (Parent != null)
+            {
+                if (Parent.GetEnergy() <= 0.0)
+                {
+                    _ad.LifeTime = _index * 0.05f;
+                    _ad.enabled = true;
+                }
             }
         }
     }
