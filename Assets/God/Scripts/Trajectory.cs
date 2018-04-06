@@ -155,5 +155,14 @@ namespace Play.Trajectory
             _lastObj = null;
         }
 
+        public void DestroyTraject()
+        {
+            foreach (GameObject part in _trajectory)
+            {
+                Destroy(part);
+            }
+            _trajectory.Clear();
+        }
+
     }
 }
