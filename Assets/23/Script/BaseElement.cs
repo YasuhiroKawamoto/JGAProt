@@ -20,6 +20,7 @@ namespace Play.Element
         // Use this for initialization
         void Start()
         {
+            //エネルギーチャージ速度の設定
             _chageSpeed = 10;
         }
 
@@ -34,7 +35,8 @@ namespace Play.Element
                 gameObject.GetComponent<Element>().ChageEnergy(_chageSpeed * Time.deltaTime);
             }
 
-            if (gameObject.GetComponent<Element>().GetState() != 0)
+            //「待機」以外では回復しない
+            if (gameObject.GetComponent<Element>().GetState() != State.WAIT)
             {
                 _isChage = false;
             }

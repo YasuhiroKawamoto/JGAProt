@@ -10,6 +10,10 @@ using UnityEngine.EventSystems;
 /// 
 namespace Play.Element
 {
+    public enum State
+    {
+        WAIT,SEND,RECIEVE,BREAK
+    }
     public class EnergyManager : MonoBehaviour
     {
 
@@ -17,14 +21,17 @@ namespace Play.Element
 
 
         [SerializeField]
-        private float _chargeAmount ;//チャージ量（秒間）
-
+        private float _chargeAmount;//チャージ量（秒間）
 
         [SerializeField]
         GameObject _senderElement;//エレメント（送る側）
 
         [SerializeField]
         GameObject _receiverElement;//エレメント（受ける側）
+
+        private int _layerNo;//レイヤー番号（マウス判定用）
+
+        private int _layerMask;//レイヤーマスク（マウス判定用）
 
 
 
@@ -33,86 +40,18 @@ namespace Play.Element
         {
             //チャージ量設定
             _chargeAmount = 5;
+            //レイヤーマスク作成
+            //対応レイヤーの管理番号を取得
+            _layerNo = LayerMask.NameToLayer("Default");
+            // マスクへの変換（ビットシフト）
+            _layerMask = 1 << _layerNo;
 
         }
 
         // Update is called once per frame
         void Update()
         {
-            //マウス操作で受け送り設定
-            if (Input.GetMouseButtonDown(0))//押したとき
-            {
-
-                Ray ray = new Ray();
-                RaycastHit2D hit = new RaycastHit2D();
-                ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-
-                //レイヤーマスク作成
-                // レイヤーの管理番号を取得
-                int layerNo = LayerMask.NameToLayer("Default");
-                // マスクへの変換（ビットシフト）
-                int layerMask = 1 << layerNo;
-
-                hit = Physics2D.Raycast((Vector2)ray.origin, (Vector2)ray.direction, 1, layerMask);
-
-                if (hit)
-                {
-                    _senderElement = hit.collider.gameObject;//エレメント（送る側）
-
-                }
-                else
-                {
-                    ResetElement();//選択状態をリセット
-
-
-                }
-
-
-
-
-            }
-            if (Input.GetMouseButtonUp(0))//離したとき
-            {
-
-                //判定用のレイを作成
-                Ray ray = new Ray();
-                RaycastHit2D hit = new RaycastHit2D();
-                ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-
-                //レイヤーマスク作成
-                // レイヤーの管理番号を取得
-                int layerNo = LayerMask.NameToLayer("Default");
-                // マスクへの変換（ビットシフト）
-                int layerMask = 1 << layerNo;
-
-                hit = Physics2D.Raycast((Vector2)ray.origin, (Vector2)ray.direction, 1, layerMask);
-
-                if (hit)
-                {
-                    //IsCharge = false;
-
-                    //送り手と違うオブジェクト上で離した場合
-                    if (hit.collider.gameObject != _senderElement)
-                    {
-                        _receiverElement = hit.collider.gameObject;//エレメント（受ける側）
-                        if (_receiverElement.GetComponent<Element>().GetState() == 0 || _receiverElement.GetComponent<Element>().GetState() == 2)
-                        {
-                            if (_senderElement)
-                            {
-                                _senderElement.gameObject.GetComponent<Element>().ChangeState(1);//エレメントの状態を「送り」に指定
-                                _senderElement.GetComponent<Element>().SetTarget(_receiverElement);//送り手に受け手を設定
-
-                                hit.collider.gameObject.GetComponent<Element>().ChangeState(2);//エレメントの状態を「受け」に指定
-                            }
-                        }
-                    }
-
-                }
-
-                ResetElement();//選択状態をリセット
-            }
-
-
+            SetElement();
         }
 
         /// <summary>
@@ -133,11 +72,69 @@ namespace Play.Element
             }
         }
 
-
+        //チャージ倍率の取得
         public float GetChargeAmount()
         {
             return _chargeAmount;
 
         }
+
+        //エレメントに対象をセットする
+        void SetElement()
+        {
+            //マウス操作で受け送り設定
+            if (Input.GetMouseButtonDown(0))//押したとき
+            {
+                //判定用のレイを作成
+                Ray ray = new Ray();
+                RaycastHit2D hit = new RaycastHit2D();
+                ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+                hit = Physics2D.Raycast((Vector2)ray.origin, (Vector2)ray.direction, 1, _layerMask);
+
+                if (hit)
+                {
+                    _senderElement = hit.collider.gameObject;//エレメント（送る側）
+
+                }
+                else
+                {
+                    ResetElement();//選択状態をリセット
+                }
+            }
+            else  if (Input.GetMouseButtonUp(0))//離したとき
+            {
+
+                //判定用のレイを作成
+                Ray ray = new Ray();
+                RaycastHit2D hit = new RaycastHit2D();
+                ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+                hit = Physics2D.Raycast((Vector2)ray.origin, (Vector2)ray.direction, 1, _layerMask);
+
+                if (hit)
+                {
+                    //送り手と違うオブジェクト上で離した場合
+                    if (hit.collider.gameObject != _senderElement && !hit.collider.gameObject.GetComponent<Element>().IsBase())
+                    {
+
+                        _receiverElement = hit.collider.gameObject;//エレメント（受ける側）
+                       
+                        if (_receiverElement.GetComponent<Element>().GetState() == (int)State.WAIT || _receiverElement.GetComponent<Element>().GetState() == State.RECIEVE)
+                        {
+                            if (_senderElement)
+                            {
+                                _senderElement.gameObject.GetComponent<Element>().ChangeState(State.SEND);//エレメントの状態を「送り」に指定
+                                _senderElement.GetComponent<Element>().SetTarget(_receiverElement);//送り手に受け手を設定
+
+                                hit.collider.gameObject.GetComponent<Element>().ChangeState(State.RECIEVE);//エレメントの状態を「受け」に指定
+                            }
+                        }
+                    }
+
+                }
+
+                ResetElement();//選択状態をリセット
+            }
+        }
+
     }
 }
