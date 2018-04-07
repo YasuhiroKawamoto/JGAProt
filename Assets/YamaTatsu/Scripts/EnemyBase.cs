@@ -68,7 +68,14 @@ namespace Play.Enemy
             }
         }
 
-        //ダメージのインターバル
+        //エフェクトの生成
+        virtual protected void SpawnEffect(GameObject Effect,Vector3 pos)
+        {
+           
+            //エフェクトの生成
+            GameObject effect = Instantiate(Effect);
+            effect.transform.position = new Vector3(pos.x,pos.y,pos.z);
+        }
        
 
         //ダメージを受ける
