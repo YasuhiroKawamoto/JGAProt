@@ -9,7 +9,6 @@ namespace Play.Timer
     public class PlayTimer : MonoBehaviour
     {
         // 初期計測時間
-        [SerializeField]
         private float _countTime = 60.0f;
 
         [SerializeField,Range(0,5)]
@@ -30,11 +29,6 @@ namespace Play.Timer
         // 値を表示するUI
         [SerializeField]
         private Text _timerText = null;
-
-        public void Start()
-        {
-            StartTimer(_countTime);
-        }
 
         /// <summary>
         /// 計測開始
