@@ -50,7 +50,7 @@ namespace Play.Enemy
             {
                 //死ぬエフェクト
                 base.SpawnEffect(_dieEffect, transform.position);
-                Destroy(this);
+                Destroy(this.gameObject);
             }
         }
 

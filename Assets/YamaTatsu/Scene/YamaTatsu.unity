@@ -459,6 +459,18 @@ Prefab:
       propertyPath: m_RootOrder
       value: 4
       objectReference: {fileID: 0}
+    - target: {fileID: 114043198044806576, guid: 6f8a58a8037c472408160c50ecd50916,
+        type: 2}
+      propertyPath: _attackEffect
+      value: 
+      objectReference: {fileID: 1582863111043670, guid: 2a1ed2d4c0d00dc419f22095f2f80330,
+        type: 2}
+    - target: {fileID: 114043198044806576, guid: 6f8a58a8037c472408160c50ecd50916,
+        type: 2}
+      propertyPath: _dieEffect
+      value: 
+      objectReference: {fileID: 1582863111043670, guid: 2a1ed2d4c0d00dc419f22095f2f80330,
+        type: 2}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 6f8a58a8037c472408160c50ecd50916, type: 2}
   m_IsPrefabParent: 0
