@@ -6,10 +6,10 @@ public class ElementChecker : MonoBehaviour {
 
 
     [SerializeField]
-    GameObject FirstElement;
+    public GameObject FirstElement { set; get; }
 
     [SerializeField]
-    GameObject SecondElement;
+    public GameObject SecondElement { set; get; }
 
 
 
@@ -23,17 +23,7 @@ public class ElementChecker : MonoBehaviour {
 		
 	}
 
-    void OnTriggerEnter2D(Collider2D other)
-    {
-        if (!FirstElement)
-        {
-            FirstElement = other.gameObject;
-        }
-        else if (other.gameObject != FirstElement)
-        {
-            SecondElement = other.gameObject;
-        }
-    }
+    
 
     public GameObject GetFirstElement()
     {
@@ -57,6 +47,18 @@ public class ElementChecker : MonoBehaviour {
         FirstElement = null;
         FirstElement = SecondElement;
         SecondElement = null;
+    }
+
+    void OnTriggerEnter2D(Collider2D other)
+    {
+        if (FirstElement == null)
+        {
+            FirstElement = other.gameObject;
+        }
+        else if (other.gameObject != FirstElement)
+        {
+            SecondElement = other.gameObject;
+        }
     }
 
 }
