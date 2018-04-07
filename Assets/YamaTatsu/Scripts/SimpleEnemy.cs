@@ -14,6 +14,13 @@ namespace Play.Enemy
         [SerializeField]
         private int _hp=10;
 
+        //攻撃エフェクト
+        [SerializeField]
+        private GameObject _attackEffect;
+        //撃破された時のエフェクト
+        [SerializeField]
+        private GameObject _dieEffect;
+
         // Use this for initialization
         void Start()
         {
@@ -41,6 +48,8 @@ namespace Play.Enemy
             //HPが0になった場合破壊する
             if (_HP <= 0)
             {
+                //死ぬエフェクト
+                base.SpawnEffect(_dieEffect, transform.position);
                 Destroy(this);
             }
         }
@@ -52,8 +61,10 @@ namespace Play.Enemy
 
             if (_attackInterval < _timeCnt)
             {
-                //
-                Debug.Log("攻撃");
+
+                //Debug.Log("攻撃");
+                //攻撃エフェクトの生成
+                base.SpawnEffect(_attackEffect, _ElementPos);
                 //エレメントの攻撃関数を受け取る
                 nearestElement.GetComponent<Element.Element>().ReceiveDamage(_damage);
                 _timeCnt = 0.0f;
