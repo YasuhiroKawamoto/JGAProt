@@ -12,7 +12,7 @@ namespace Play.Element
 {
     public enum State
     {
-        WAIT,SEND,RECIEVE,BREAK
+        WAIT, SEND, RECIEVE, BREAK
     }
     public class EnergyManager : MonoBehaviour
     {
@@ -30,13 +30,22 @@ namespace Play.Element
         Element _receiverElement;//エレメント（受ける側）
 
         [SerializeField]
-        GameObject _trajectoryManager;
+        GameObject _trajectoryManager;//軌跡マネージャ
         [SerializeField]
-        List<GameObject> _elementList;
+        List<GameObject> _elementList;//エレメントリスト（エレメント管理用）
+
+        [SerializeField]
+        GameObject _checker;
+
+        private Vector3 _checkerPos;
+
+        private Vector3 _mousePos;
 
         private int _layerNo;//レイヤー番号（マウス判定用）
 
         private int _layerMask;//レイヤーマスク（マウス判定用）
+        [SerializeField]
+        private bool _isPush;//マウスプッシュ中か？
 
 
 
@@ -47,6 +56,9 @@ namespace Play.Element
             {
                 _elementList.Add(obj);
             }
+
+            //チェッカーの取得
+            _checker = transform.FindChild("ElementChecker").gameObject;
 
             _trajectoryManager = GameObject.Find("TrajectoryMan");
             //チャージ量設定
@@ -62,7 +74,9 @@ namespace Play.Element
         // Update is called once per frame
         void Update()
         {
-            SetElement();
+
+
+            SetElement2();
         }
 
         /// <summary>
@@ -113,7 +127,7 @@ namespace Play.Element
                     ResetElement();//選択状態をリセット
                 }
             }
-            else  if (Input.GetMouseButtonUp(0))//離したとき
+            else if (Input.GetMouseButtonUp(0))//離したとき
             {
 
                 //判定用のレイを作成
@@ -129,7 +143,7 @@ namespace Play.Element
                     {
 
                         _receiverElement = hit.collider.GetComponent<Element>();//エレメント（受ける側）
-                       
+
                         if (_receiverElement.GetComponent<Element>().GetState() == (int)State.WAIT || _receiverElement.GetComponent<Element>().GetState() == State.RECIEVE)
                         {
                             if (_senderElement)
@@ -158,6 +172,136 @@ namespace Play.Element
                 ResetElement();//選択状態をリセット
             }
         }
+
+
+        void SetElement2()
+        {
+
+          
+
+
+            //if (Input.GetMouseButtonDown(0))
+            //{
+
+
+
+
+            //    //判定用のレイを作成
+            //    Ray ray = new Ray();
+            //    RaycastHit2D hit = new RaycastHit2D();
+            //    ray = Camera.main.ScreenPointToRay(_mousePos);
+            //    hit = Physics2D.Raycast((Vector2)ray.origin, (Vector2)ray.direction, 1, _layerMask);
+
+            //    if (hit)
+            //    {
+            //        _senderElement = hit.collider.GetComponent<Element>();//エレメント（送る側）
+            //        _trajectoryManager.GetComponent<Trajectory.Trajectory>().StartTrajectory(_senderElement);
+
+            //    }
+            //    else
+            //    {
+            //        ResetElement();//選択状態をリセット
+            //    }
+
+
+            //    //if (_checker.GetComponent<ElementChecker>().GetFirstElement()!= null)
+            //    //{
+            //    //    _senderElement = _checker.GetComponent<ElementChecker>().GetFirstElement().GetComponent<Element>();//エレメント（送る側）
+            //    //    _trajectoryManager.GetComponent<Trajectory.Trajectory>().StartTrajectory(_senderElement);
+
+            //    //}
+            //}
+
+
+            if (Input.GetMouseButton(0))
+            {
+                //押している判定
+                _isPush = true;
+
+                // Vector3でマウス位置座標を取得する
+                _mousePos = Input.mousePosition;
+                // Z軸修正
+                _mousePos.z = 10f;
+                // マウス位置座標をスクリーン座標からワールド座標に変換する
+                _checkerPos = Camera.main.ScreenToWorldPoint(_mousePos);
+                // ワールド座標に変換されたマウス座標を代入
+                _checker.transform.position = _checkerPos;
+                //マウス操作で受け送り設定
+            }
+            else
+            {
+                //押していない判定
+                _isPush = false;
+            }
+
+
+
+
+           
+
+            if (_isPush)
+            {
+
+
+                if (!_senderElement)
+                {
+                    if (_checker.GetComponent<ElementChecker>().GetFirstElement() != null)
+                    {
+                        _senderElement = _checker.GetComponent<ElementChecker>().GetFirstElement().GetComponent<Element>();//エレメント（送る側）
+
+                        _trajectoryManager.GetComponent<Trajectory.Trajectory>().StartTrajectory(_senderElement);
+
+                    }
+                }
+
+
+
+                //送り手と違うオブジェクトに触れた場合
+                if (_checker.GetComponent<ElementChecker>().GetSecondElement())
+                {
+                    //送り先がベースで無ければ
+                    if (!_checker.GetComponent<ElementChecker>().GetSecondElement().GetComponent<Element>().IsBase())
+                    {
+                        _receiverElement = _checker.GetComponent<ElementChecker>().GetSecondElement().GetComponent<Element>();//エレメント（受ける側）
+
+                        if (_receiverElement.GetComponent<Element>().GetState() == (int)State.WAIT || _receiverElement.GetComponent<Element>().GetState() == State.RECIEVE)
+                        {
+                            if (_senderElement)
+                            {
+
+                                //if ((_senderElement.GetComponent<Element>().GetEnergy() / (double)_trajectoryManager.GetComponent<Trajectory.Trajectory>().Count) > 1.00)
+                                //{
+                                    _senderElement.gameObject.GetComponent<Element>().ChangeState(State.SEND);//エレメントの状態を「送り」に指定
+                                    _senderElement.GetComponent<Element>().SetTarget(_receiverElement.gameObject);//送り手に受け手を設定
+                                    _trajectoryManager.GetComponent<Trajectory.Trajectory>().EndTrajectory();
+                                    _checker.GetComponent<ElementChecker>().GetSecondElement().GetComponent<Element>().ChangeState(State.RECIEVE);//エレメントの状態を「受け」に指定
+                                    _checker.GetComponent<ElementChecker>().ToNext();
+                                    ResetElement();//選択状態をリセット
+
+                                //}
+                                //else
+                                //{         
+                                //    ResetElement();//選択状態をリセット
+                                //    _trajectoryManager.GetComponent<Trajectory.Trajectory>().DestroyTraject();
+                                //}
+                            }
+                        }
+
+                    }
+                }
+            }
+            else
+            {
+                _trajectoryManager.GetComponent<Trajectory.Trajectory>().EndTrajectory();
+                _checker.GetComponent<ElementChecker>().Reset();
+                ResetElement();//選択状態をリセット
+
+            }
+           
+
+        }
+
+
 
     }
 }

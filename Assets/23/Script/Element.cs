@@ -80,7 +80,7 @@ namespace Play.Element
             //初期状態を「非設定」に指定
             _state = 0;
             //送り先リストのクリア
-            _sendTargetList.Clear();         
+            _sendTargetList.Clear();
             //エナジーマネージャーのセット
             _energyManager = GameObject.Find("EnergyManager");
 
@@ -93,7 +93,7 @@ namespace Play.Element
             //エレメントの稼働
             OperationElement();
 
-            
+
         }
 
         /// <summary>
@@ -123,7 +123,7 @@ namespace Play.Element
             }
             else
             {
-                
+
                 _durability -= damage;
 
                 if (_durability < 0)
@@ -146,7 +146,7 @@ namespace Play.Element
                         gameObject.GetComponent<SpriteRenderer>().sprite = _damageSprite3;
                     }
                 }
-               
+
                 else if (_durability < 50)
                 {
                     _capacity = 50.00;
@@ -222,11 +222,11 @@ namespace Play.Element
 
                     break;
                 case State.SEND://送り
-                   
+
                     break;
 
                 case State.RECIEVE://受け
-                    
+
 
                     break;
 
@@ -244,14 +244,14 @@ namespace Play.Element
         /// <param name="obj"></param>
         public void SetTarget(GameObject obj)
         {
-                _sendTargetList.Add(obj);
+            _sendTargetList.Add(obj);
         }
 
         /// <summary>
         /// 重複チェック(まだみかん)
         /// </summary>
         /// <returns></returns>     
-         public bool CheckDuplication()
+        public bool CheckDuplication()
         {
 
             HashSet<GameObject> _hashSet = new HashSet<GameObject>(_sendTargetList);
@@ -325,7 +325,7 @@ namespace Play.Element
                             _exclusionObj = null;
                             //送り先数の更新
                             _sendTargetCount = _sendTargetList.Count;
-                            
+
                         }
 
 
@@ -374,7 +374,7 @@ namespace Play.Element
             }
             else
             {
-                
+
                 _recoveryTime -= 1.00 * Time.deltaTime;
                 //回復に必要な時間経過後
                 if (_recoveryTime < 0.00)
@@ -400,5 +400,33 @@ namespace Play.Element
             }
 
         }
+
+
+
+
+
+
+
+        public void ResetElement()
+        {
+            _isRecovery = false;
+
+            _recoveryTime = 10;
+
+            _energy = 0;
+
+            _capacity = 100;
+
+            _durability = 100;
+
+            _sendTargetList.Clear();
+
+            ChangeState(State.WAIT);
+
+        }
+
     }
+
+
+
 }
