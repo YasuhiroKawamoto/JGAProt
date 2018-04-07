@@ -46,9 +46,6 @@ namespace Play.Trajectory
         // Update is called once per frame
         void Update()
         {
-
-            Debug.Log(Parent.GetEnergy());
-
             if (Parent != null)
             {
                 if (Parent.GetEnergy() <= 0.0)
@@ -57,6 +54,13 @@ namespace Play.Trajectory
                     _ad.enabled = true;
                 }
             }
+        }
+
+
+        private void OnTriggerStay2D(Collider2D collision)
+        {
+            Debug.Log("hit");
+            collision.gameObject.GetComponent<Enemy.SimpleEnemy>().Damage(1);
         }
     }
 }
