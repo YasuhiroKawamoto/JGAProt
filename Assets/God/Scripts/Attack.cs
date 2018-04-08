@@ -47,7 +47,7 @@ namespace Play.Trajectory
         {
             if (Parent != null)
             {
-                if (Parent.GetEnergy() <= 0.0)
+                if (Parent.GetState() != Element.State.SEND)
                 {
                     _ad.LifeTime = _index * 0.05f;
                     _ad.enabled = true;
