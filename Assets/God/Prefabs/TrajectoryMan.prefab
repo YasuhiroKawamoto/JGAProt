@@ -53,6 +53,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _plot: {fileID: 1053301319403488, guid: a7d1273195c08b440992a45563415d28, type: 2}
   _interval: 0.5
-  _element: {fileID: 0}
+  _trajectoryRoot: {fileID: 1573676221913928, guid: 1b7858f731bc1be46a1972dac56e4a1d,
+    type: 2}
   _attack: {fileID: 114153622860775520, guid: 759898893613a9541a68ba1a1446820f, type: 2}
   _attackDiff: 0.05
