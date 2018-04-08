@@ -35,11 +35,11 @@ namespace Play.Element
         List<GameObject> _elementList;//エレメントリスト（エレメント管理用）
 
         [SerializeField]
-        GameObject _checker;
+        GameObject _checker;//当たり判定チェッカー
 
-        private Vector3 _checkerPos;
+        private Vector3 _checkerPos;//チェッカーのポジション
 
-        private Vector3 _mousePos;
+        private Vector3 _mousePos;//マウスポジション
 
         private int _layerNo;//レイヤー番号（マウス判定用）
 
@@ -74,7 +74,12 @@ namespace Play.Element
         // Update is called once per frame
         void Update()
         {
-            SetElement3();
+            //軌跡マネージャがある場合動作
+            if (_trajectoryManager)
+            {
+                //エレメント選択処理
+                ConfigElement3();
+            }
         }
 
         /// <summary>
@@ -95,6 +100,7 @@ namespace Play.Element
             }
         }
 
+        //連続選択用状態管理
         void ToNextElement()
         {
           
@@ -105,9 +111,6 @@ namespace Play.Element
                 _senderElement = _receiverElement;
                 _receiverElement = null;//エレメント（受ける側）
 
-            
-
-
         }
 
         //チャージ倍率の取得
@@ -117,8 +120,8 @@ namespace Play.Element
 
         }
 
-        //エレメントに対象をセットする
-        void SetElement()
+        //エレメント設定１
+        void ConfigElement()
         {
             //マウス操作で受け送り設定
             if (Input.GetMouseButtonDown(0))//押したとき
@@ -186,8 +189,8 @@ namespace Play.Element
             }
         }
 
-
-        void SetElement2()
+        //エレメント設定２
+        void ConfigElement2()
         {
 
             if (Input.GetMouseButton(0))
@@ -259,10 +262,9 @@ namespace Play.Element
         }
 
 
-
-        void SetElement3()
+        //エレメント設定３
+        void ConfigElement3()
         {
-
             if (Input.GetMouseButtonDown(0))
             {
                 //押している判定
@@ -324,6 +326,7 @@ namespace Play.Element
                                 else
                                 {
                                     _trajectoryManager.GetComponent<Trajectory.Trajectory>().SetTrajectoryInvalid();
+                                  
                                     ResetElement();//次のエレメント選択
                                
                                 }
@@ -339,10 +342,34 @@ namespace Play.Element
             {
                 _checker.GetComponent<ElementChecker>().Reset();
                 ResetElement();//選択状態をリセット
-                _trajectoryManager.GetComponent<Trajectory.Trajectory>().DestroyTraject();
-               
+                _trajectoryManager.GetComponent<Trajectory.Trajectory>().DestroyTraject();            
             }
         }
 
+        //軌跡マネージャセット関数
+        public void SetTrajectoryManager(GameObject trajectoryMan)
+        {
+            _trajectoryManager = trajectoryMan;
+        }
+
+
+        //エレメント一括ポーズ、ポーズ解除
+        public void PauseElements()
+        {
+            foreach (GameObject obj in _elementList)
+            {
+                obj.GetComponent<Element>().SetIsPause();
+            }
+        }
+
+        //エレメント一括リセット
+        public void ResetElements()
+        {
+            foreach (GameObject obj in _elementList)
+            {
+                obj.GetComponent<Element>().ResetElement();
+            }
+
+        }
     }
 }
