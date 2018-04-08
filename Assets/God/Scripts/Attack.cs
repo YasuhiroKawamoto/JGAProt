@@ -59,8 +59,10 @@ namespace Play.Trajectory
 
         private void OnTriggerStay2D(Collider2D collision)
         {
-            Debug.Log("hit");
-            collision.gameObject.GetComponent<Enemy.SimpleEnemy>().Damage(1);
+            if (collision.tag == "Enemy")
+            {
+               collision.gameObject.GetComponent<Enemy.SimpleEnemy>().Damage(1);
+            }
         }
     }
 }
