@@ -122,6 +122,8 @@ namespace Play
             traject.transform.parent = PlayManager.Instance.ObjectRoot.transform;
             // リセットするオブジェクトに追加
             _resetList.Add(traject.gameObject);
+            // エレメントリスト更新
+            _energyManager.GetElementListOnScene();
             // ========================================================================
         }
 
