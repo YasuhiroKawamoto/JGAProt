@@ -180,6 +180,7 @@ namespace Play.Trajectory
                 part.GetComponent<SpriteRenderer>().color = Color.black;
 
                 // 直値危険
+                part.AddComponent<AutoDestroyer>();
                 part.GetComponent<AutoDestroyer>().LifeTime = 0.5f;
             }
         }
