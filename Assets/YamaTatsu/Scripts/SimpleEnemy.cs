@@ -49,7 +49,10 @@ namespace Play.Enemy
             if (_HP <= 0)
             {
                 //死ぬエフェクト
-                base.SpawnEffect(_dieEffect, transform.position);
+                if (_dieEffect != null)
+                {
+                    base.SpawnEffect(_dieEffect, transform.position);
+                }
                 Destroy(this.gameObject);
             }
         }
@@ -64,7 +67,10 @@ namespace Play.Enemy
 
                 //Debug.Log("攻撃");
                 //攻撃エフェクトの生成
-                base.SpawnEffect(_attackEffect, _ElementPos);
+                if (_attackEffect != null)
+                {
+                    base.SpawnEffect(_attackEffect, _ElementPos);
+                }
                 //エレメントの攻撃関数を受け取る
                 nearestElement.GetComponent<Element.Element>().ReceiveDamage(_damage);
                 _timeCnt = 0.0f;
