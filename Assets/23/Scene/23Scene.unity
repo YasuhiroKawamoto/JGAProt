@@ -161,6 +161,11 @@ Prefab:
       propertyPath: m_TagString
       value: Element
       objectReference: {fileID: 0}
+    - target: {fileID: 114035579851738148, guid: 835b42123fb375c41844d3e6ef880032,
+        type: 2}
+      propertyPath: _chageSpeed
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 835b42123fb375c41844d3e6ef880032, type: 2}
   m_IsPrefabParent: 0

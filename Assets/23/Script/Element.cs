@@ -58,6 +58,8 @@ namespace Play.Element
         [SerializeField]
         private Sprite _breakSprite;//破壊状態の画像
 
+        private bool _isPause;
+
 
 
 
@@ -66,6 +68,7 @@ namespace Play.Element
         // Use this for initialization
         void Start()
         {
+            _isPause = false;
             //イラストをnormalに指定
             if (!_isBase)
             {
@@ -89,10 +92,11 @@ namespace Play.Element
         // Update is called once per frame
         void Update()
         {
-
-            //エレメントの稼働
-            OperationElement();
-
+            if (!_isPause)
+            {
+                //エレメントの稼働
+                OperationElement();
+            }
 
         }
 
@@ -203,15 +207,18 @@ namespace Play.Element
             return _state;
         }
 
+        //エレメントの容量取得関数
         public double GetCapacity()
         {
             return _capacity;
         }
+
+        //エレメントの状態変更関数
         public void ChangeState(State state)
         {
             _state = state;
 
-            //状態に応じて色変更
+            
             switch (_state)
             {
                 case State.WAIT://非指定
@@ -406,7 +413,7 @@ namespace Play.Element
 
 
 
-
+        //エレメント情報のリセット関数
         public void ResetElement()
         {
             _isRecovery = false;
@@ -422,6 +429,22 @@ namespace Play.Element
             _sendTargetList.Clear();
 
             ChangeState(State.WAIT);
+
+        }
+
+
+        //ポーズ切替関数
+        public void SetIsPause()
+        {
+            _isPause = !_isPause;
+
+
+        }
+
+        public bool GetIsPause()
+        {
+           return _isPause;
+
 
         }
 
