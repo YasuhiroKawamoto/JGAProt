@@ -157,11 +157,14 @@ namespace Play.Trajectory
 
         public void DestroyTraject()
         {
-            foreach (GameObject part in _trajectory)
+            if (_trajectory != null)
             {
-                Destroy(part);
+                foreach (GameObject part in _trajectory)
+                {
+                    Destroy(part);
+                }
+                _trajectory.Clear();
             }
-            _trajectory.Clear();
         }
 
         public void SetTrajectoryInvalid()
