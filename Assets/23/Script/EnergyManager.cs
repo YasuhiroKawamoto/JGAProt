@@ -252,6 +252,7 @@ namespace Play.Element
             }
             else
             {
+                _checker.GetComponent<ElementChecker>().Reset();
                 ResetElement();//選択状態をリセット
                 _trajectoryManager.GetComponent<Trajectory.Trajectory>().DestroyTraject();
 
