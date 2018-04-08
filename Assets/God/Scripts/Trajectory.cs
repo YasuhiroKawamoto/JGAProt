@@ -183,6 +183,12 @@ namespace Play.Trajectory
                 part.AddComponent<AutoDestroyer>();
                 part.GetComponent<AutoDestroyer>().LifeTime = 0.5f;
             }
+
+            // 仮軌跡を削除
+            _trajectory.Clear();
+
+            // 軌跡の中断
+            _lastObj = null;
         }
 
     }
