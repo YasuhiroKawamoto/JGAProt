@@ -58,7 +58,7 @@ namespace Play.Element
             }
 
             //チェッカーの取得
-            _checker = transform.FindChild("ElementChecker").gameObject;
+            _checker = transform.Find("ElementChecker").gameObject;
 
             _trajectoryManager = GameObject.Find("TrajectoryMan");
             //チャージ量設定
