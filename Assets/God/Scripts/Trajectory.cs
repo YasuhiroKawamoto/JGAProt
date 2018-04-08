@@ -15,6 +15,10 @@ namespace Play.Trajectory
         [SerializeField]
         private float _interval;
 
+        // ルートオブジェクト
+        [SerializeField]
+        private GameObject _trajectoryRoot;
+
         // タップ開始エレメント
         private Element.Element _element;
 
@@ -52,6 +56,9 @@ namespace Play.Trajectory
         {
             _trajectory = new List<GameObject>();
             //_effects = new List<Attack>();
+
+            // 起動時に軌跡のルートを作成
+            _trajectoryRoot = Instantiate(_trajectoryRoot);
         }
 
         // Update is called once per frame
@@ -86,7 +93,7 @@ namespace Play.Trajectory
             {
                 _plot.transform.position = worldPos;
 
-                _lastObj = Instantiate(_plot);
+                _lastObj = Instantiate(_plot, _trajectoryRoot.transform);
                 _trajectory.Add(_lastObj);
             }
         }
@@ -116,7 +123,7 @@ namespace Play.Trajectory
             yield return new WaitForSeconds(seconds);
 
             _attack.transform.position = part.transform.position;
-            Attack atkObj = Instantiate(_attack);
+            Attack atkObj = Instantiate(_attack, _trajectoryRoot.transform);
             atkObj.Parent = _element;
             atkObj.Index = index;
             //_effects.Add( atkObj);
@@ -145,7 +152,6 @@ namespace Play.Trajectory
                 StartCoroutine(CreateAttack(part, timeDiff, i));
                 timeDiff += _attackDiff;
                 i++;
-
             }
 
             // 仮軌跡を削除
@@ -172,7 +178,17 @@ namespace Play.Trajectory
             foreach(GameObject part in _trajectory)
             {
                 part.GetComponent<SpriteRenderer>().color = Color.black;
+
+                // 直値危険
+                part.AddComponent<AutoDestroyer>();
+                part.GetComponent<AutoDestroyer>().LifeTime = 0.5f;
             }
+
+            // 仮軌跡を削除
+            _trajectory.Clear();
+
+            // 軌跡の中断
+            _lastObj = null;
         }
 
     }

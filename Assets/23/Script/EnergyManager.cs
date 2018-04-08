@@ -289,8 +289,9 @@ namespace Play.Element
                 {
                     if (_checker.GetComponent<ElementChecker>().GetFirstElement() != null)
                     {
-                        _senderElement = _checker.GetComponent<ElementChecker>().GetFirstElement().GetComponent<Element>();//エレメント（送る側）
-
+                        //エレメント（送る側）の取得
+                        _senderElement = _checker.GetComponent<ElementChecker>().GetFirstElement().GetComponent<Element>();
+                        //軌跡の開始を告げる
                         _trajectoryManager.GetComponent<Trajectory.Trajectory>().StartTrajectory(_senderElement);
 
                     }
@@ -301,8 +302,9 @@ namespace Play.Element
                     //送り先がベースで無ければ
                     if (!_checker.GetComponent<ElementChecker>().GetSecondElement().GetComponent<Element>().IsBase())
                     {
-                        _receiverElement = _checker.GetComponent<ElementChecker>().GetSecondElement().GetComponent<Element>();//エレメント（受ける側）
-
+                        //エレメント（受ける側）をチェッカーが取得したものに設定
+                        _receiverElement = _checker.GetComponent<ElementChecker>().GetSecondElement().GetComponent<Element>();
+                        //受け側のエレメントが「待機」or「受け」の場合なら
                         if (_receiverElement.GetComponent<Element>().GetState() == (int)State.WAIT || _receiverElement.GetComponent<Element>().GetState() == State.RECIEVE)
                         {
                             if (_senderElement)
@@ -310,22 +312,36 @@ namespace Play.Element
 
                                 if ((_senderElement.GetComponent<Element>().GetEnergy() / (double)_trajectoryManager.GetComponent<Trajectory.Trajectory>().Count) > 1.00)
                                 {
-                                    _senderElement.gameObject.GetComponent<Element>().ChangeState(State.SEND);//エレメントの状態を「送り」に指定
-                                    _senderElement.GetComponent<Element>().SetTarget(_receiverElement.gameObject);//送り手に受け手を設定
-                                    _receiverElement.GetComponent<Element>().ChangeState(State.RECIEVE);//エレメントの状態を「受け」に指定                          
-                                    _trajectoryManager.GetComponent<Trajectory.Trajectory>().EndTrajectory();
-                                    _checker.GetComponent<ElementChecker>().Reset();
 
-                                    ResetElement();//次のエレメント選択
+                                    //エレメントの状態を「送り」に指定
+                                    _senderElement.gameObject.GetComponent<Element>().ChangeState(State.SEND);
+                                    //送り手に受け手を設定
+                                    _senderElement.GetComponent<Element>().SetTarget(_receiverElement.gameObject);
+                                    //エレメントの状態を「受け」に指定   
+                                    _receiverElement.GetComponent<Element>().ChangeState(State.RECIEVE);
+                                    //軌跡に終わりを告げる                     
+                                    _trajectoryManager.GetComponent<Trajectory.Trajectory>().EndTrajectory();
+                                    //チェッカーのリセット
+                                    _checker.GetComponent<ElementChecker>().Reset();
+                                    //エレメント選択のリセット
+                                    ResetElement();
                                     //押していない判定
                                     _isPush = false;
                                 }
                                 else
                                 {
+
+                                    //チェッカーのリセット
+                                    _checker.GetComponent<ElementChecker>().Reset();
+
+                                    //不可奇跡のからー変更
                                     _trajectoryManager.GetComponent<Trajectory.Trajectory>().SetTrajectoryInvalid();
                                   
                                     ResetElement();//次のエレメント選択
                                
+               
+
+
                                 }
 
                             }
