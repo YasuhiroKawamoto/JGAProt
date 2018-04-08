@@ -325,12 +325,14 @@ namespace Play.Element
                                     _checker.GetComponent<ElementChecker>().Reset();
                                     //エレメント選択のリセット
                                     ResetElement();
-
                                     //押していない判定
                                     _isPush = false;
                                 }
                                 else
                                 {
+
+                                    //チェッカーのリセット
+                                    _checker.GetComponent<ElementChecker>().Reset();
 
                                     //不可奇跡のからー変更
                                     _trajectoryManager.GetComponent<Trajectory.Trajectory>().SetTrajectoryInvalid();
