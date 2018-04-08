@@ -6,7 +6,6 @@ namespace Play.Trajectory
 {
     public class Attack : MonoBehaviour
     {
-
         // 発生元エレメント
         public Element.Element Parent
         {
