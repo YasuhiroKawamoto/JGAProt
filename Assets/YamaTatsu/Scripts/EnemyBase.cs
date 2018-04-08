@@ -46,7 +46,7 @@ namespace Play.Enemy
         virtual protected void SearchElement()
         {
             //エレメントを探し挿入するリスト
-            if (gameObject.GetComponent<Element.Element>().IsBase())
+            if (!gameObject.GetComponent<Element.Element>().IsBase())
             {
                 GameObject[] Elements = GameObject.FindGameObjectsWithTag("Element");
                 //近いエレメントを探す処理
