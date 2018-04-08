@@ -6,7 +6,6 @@ namespace Play.Trajectory
 {
     public class Attack : MonoBehaviour
     {
-
         // 発生元エレメント
         public Element.Element Parent
         {
@@ -46,9 +45,6 @@ namespace Play.Trajectory
         // Update is called once per frame
         void Update()
         {
-
-            Debug.Log(Parent.GetEnergy());
-
             if (Parent != null)
             {
                 if (Parent.GetEnergy() <= 0.0)
@@ -56,6 +52,15 @@ namespace Play.Trajectory
                     _ad.LifeTime = _index * 0.05f;
                     _ad.enabled = true;
                 }
+            }
+        }
+
+
+        private void OnTriggerStay2D(Collider2D collision)
+        {
+            if (collision.tag == "Enemy")
+            {
+               collision.gameObject.GetComponent<Enemy.SimpleEnemy>().Damage(1);
             }
         }
     }
