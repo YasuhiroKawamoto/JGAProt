@@ -12,14 +12,10 @@ namespace Play.Element
 {
     public enum State
     {
-        WAIT, SEND, RECIEVE, BREAK
+        WAIT, SEND, RECIEVE, BREAK, FULL
     }
     public class EnergyManager : MonoBehaviour
     {
-
-
-
-
         [SerializeField]
         private float _chargeAmount;//チャージ量（秒間）
 
@@ -47,8 +43,6 @@ namespace Play.Element
         [SerializeField]
         private bool _isPush;//マウスプッシュ中か？
 
-
-
         // Use this for initialization
         void Start()
         {
@@ -56,7 +50,7 @@ namespace Play.Element
             GetElementListOnScene();
             //チェッカーの取得
             _checker = transform.Find("ElementChecker").gameObject;
-
+            //軌跡マネージャの取得
             _trajectoryManager = GameObject.Find("TrajectoryMan");
             //チャージ量設定
             _chargeAmount = 5;
@@ -100,13 +94,13 @@ namespace Play.Element
         //連続選択用状態管理
         void ToNextElement()
         {
-          
-    
-                //送り側のリセット
-                _senderElement = null;//エレメント（送る側）
-                //受け側のリセット
-                _senderElement = _receiverElement;
-                _receiverElement = null;//エレメント（受ける側）
+
+
+            //送り側のリセット
+            _senderElement = null;//エレメント（送る側）
+                                  //受け側のリセット
+            _senderElement = _receiverElement;
+            _receiverElement = null;//エレメント（受ける側）
 
         }
 
@@ -157,7 +151,7 @@ namespace Play.Element
 
                         _receiverElement = hit.collider.GetComponent<Element>();//エレメント（受ける側）
 
-                        if (_receiverElement.GetComponent<Element>().GetState() == (int)State.WAIT || _receiverElement.GetComponent<Element>().GetState() == State.RECIEVE)
+                        if (_receiverElement.GetComponent<Element>().GetState() == State.WAIT || _receiverElement.GetComponent<Element>().GetState() == State.RECIEVE)
                         {
                             if (_senderElement)
                             {
@@ -193,7 +187,7 @@ namespace Play.Element
             if (Input.GetMouseButton(0))
             {
                 //押している判定
-                _isPush = true;            
+                _isPush = true;
             }
             else
             {
@@ -224,7 +218,7 @@ namespace Play.Element
                     }
                 }
                 //送り手と違うオブジェクトに触れた
-                if (_checker.GetComponent<ElementChecker>().GetSecondElement() && _checker.GetComponent<ElementChecker>().GetSecondElement()!=_senderElement)
+                if (_checker.GetComponent<ElementChecker>().GetSecondElement() && _checker.GetComponent<ElementChecker>().GetSecondElement() != _senderElement)
                 {
                     //送り先がベースで無ければ
                     if (!_checker.GetComponent<ElementChecker>().GetSecondElement().GetComponent<Element>().IsBase())
@@ -242,12 +236,12 @@ namespace Play.Element
                                 _checker.GetComponent<ElementChecker>().ToNext();
                                 _trajectoryManager.GetComponent<Trajectory.Trajectory>().StartTrajectory(_senderElement);
                                 ToNextElement();//次のエレメント選択に移
-                                                 
+
                             }
                         }
 
                     }
-                    
+
                 }
             }
             else
@@ -283,8 +277,8 @@ namespace Play.Element
                 _checkerPos = Camera.main.ScreenToWorldPoint(_mousePos);
                 // ワールド座標に変換されたマウス座標を代入
                 _checker.transform.position = _checkerPos;
-                //マウス操作で受け送り設定
 
+                //マウス操作で受け送り設定
                 if (!_senderElement)
                 {
                     if (_checker.GetComponent<ElementChecker>().GetFirstElement() != null)
@@ -305,7 +299,7 @@ namespace Play.Element
                         //エレメント（受ける側）をチェッカーが取得したものに設定
                         _receiverElement = _checker.GetComponent<ElementChecker>().GetSecondElement().GetComponent<Element>();
                         //受け側のエレメントが「待機」or「受け」の場合なら
-                        if (_receiverElement.GetComponent<Element>().GetState() == (int)State.WAIT || _receiverElement.GetComponent<Element>().GetState() == State.RECIEVE)
+                        if (_receiverElement.GetComponent<Element>().GetState() == State.WAIT || _receiverElement.GetComponent<Element>().GetState() == State.RECIEVE)
                         {
                             if (_senderElement)
                             {
@@ -330,31 +324,37 @@ namespace Play.Element
                                 }
                                 else
                                 {
-
-                                    
-
                                     //不可奇跡のからー変更
                                     _trajectoryManager.GetComponent<Trajectory.Trajectory>().SetTrajectoryInvalid();
-                                  
-                                    ResetElement();//次のエレメント選択
-
+                                    //次のエレメント選択
+                                    ResetElement();
                                     //押していない判定
                                     _isPush = false;
 
                                 }
-
                             }
                         }
+                        else
+                        {
+                            //不可奇跡のからー変更
+                            _trajectoryManager.GetComponent<Trajectory.Trajectory>().SetTrajectoryInvalid();
+                            //次のエレメント選択
+                            ResetElement();
+                            //押していない判定
+                            _isPush = false;
 
+                        }
                     }
-
                 }
             }
             else
             {
+                //チェッカーの選択状態をリセット
                 _checker.GetComponent<ElementChecker>().Reset();
-                ResetElement();//選択状態をリセット
-                _trajectoryManager.GetComponent<Trajectory.Trajectory>().DestroyTraject();            
+                //選択状態をリセット
+                ResetElement();
+                //軌跡の削除
+                _trajectoryManager.GetComponent<Trajectory.Trajectory>().DestroyTraject();
             }
         }
 
@@ -381,7 +381,6 @@ namespace Play.Element
             {
                 obj.GetComponent<Element>().ResetElement();
             }
-
         }
 
 
@@ -392,7 +391,6 @@ namespace Play.Element
             {
                 _elementList.Add(obj);
             }
-
         }
     }
 }
