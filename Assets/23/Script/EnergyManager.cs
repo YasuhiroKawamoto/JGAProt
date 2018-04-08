@@ -308,16 +308,24 @@ namespace Play.Element
                         {
                             if (_senderElement)
                             {
-                                _senderElement.gameObject.GetComponent<Element>().ChangeState(State.SEND);//エレメントの状態を「送り」に指定
-                                _senderElement.GetComponent<Element>().SetTarget(_receiverElement.gameObject);//送り手に受け手を設定
-                                _receiverElement.GetComponent<Element>().ChangeState(State.RECIEVE);//エレメントの状態を「受け」に指定                          
-                                _trajectoryManager.GetComponent<Trajectory.Trajectory>().EndTrajectory();
-                                _checker.GetComponent<ElementChecker>().Reset();
-                               
-                                ResetElement();//次のエレメント選択に移
-                                
-                                //押していない判定
-                                _isPush = false;
+
+                                if ((_senderElement.GetComponent<Element>().GetEnergy() / (double)_trajectoryManager.GetComponent<Trajectory.Trajectory>().Count) > 1.00)
+                                {
+                                    _senderElement.gameObject.GetComponent<Element>().ChangeState(State.SEND);//エレメントの状態を「送り」に指定
+                                    _senderElement.GetComponent<Element>().SetTarget(_receiverElement.gameObject);//送り手に受け手を設定
+                                    _receiverElement.GetComponent<Element>().ChangeState(State.RECIEVE);//エレメントの状態を「受け」に指定                          
+                                    _trajectoryManager.GetComponent<Trajectory.Trajectory>().EndTrajectory();
+                                    _checker.GetComponent<ElementChecker>().Reset();
+
+                                    ResetElement();//次のエレメント選択に移
+                                    //押していない判定
+                                    _isPush = false;
+                                }
+                                else
+                                {
+                                    
+
+                                }
 
                             }
                         }
