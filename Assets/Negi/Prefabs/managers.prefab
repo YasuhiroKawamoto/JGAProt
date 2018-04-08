@@ -239,6 +239,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _uiRoot: {fileID: 0}
   _2dObjectRoot: {fileID: 0}
+  _gameManager: {fileID: 114603656375998048}
 --- !u!114 &114603656375998048
 MonoBehaviour:
   m_ObjectHideFlags: 1
