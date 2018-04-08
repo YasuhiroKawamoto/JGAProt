@@ -45,12 +45,13 @@ namespace Play.Enemy
         //近いエレメントを探す
         virtual protected void SearchElement()
         {
-            //エレメントを探し挿入するリスト
-            if (!gameObject.GetComponent<Element.Element>().IsBase())
+           
+            GameObject[] Elements = GameObject.FindGameObjectsWithTag("Element");
+            //近いエレメントを探す処理
+            foreach (GameObject element in Elements)
             {
-                GameObject[] Elements = GameObject.FindGameObjectsWithTag("Element");
-                //近いエレメントを探す処理
-                foreach (GameObject element in Elements)
+                //エレメントを探し挿入するリスト
+                if (!element.GetComponent<Element.Element>().IsBase())
                 {
                     //距離を求める
                     float dis = Vector3.Distance(transform.position, element.transform.position);
