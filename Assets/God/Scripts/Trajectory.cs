@@ -62,11 +62,6 @@ namespace Play.Trajectory
             {
                 Trajectry();
             }
-
-            if (Input.GetMouseButton(0))
-            {
-                SetTrajectoryInvalid();
-            }
         }
 
 
