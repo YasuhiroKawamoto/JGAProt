@@ -58,7 +58,7 @@ namespace Play.Trajectory
             //_effects = new List<Attack>();
 
             // 起動時に軌跡のルートを作成
-            Instantiate(_trajectoryRoot);
+            _trajectoryRoot = Instantiate(_trajectoryRoot);
         }
 
         // Update is called once per frame
