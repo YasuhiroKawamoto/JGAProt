@@ -46,24 +46,27 @@ namespace Play.Enemy
         virtual protected void SearchElement()
         {
             //エレメントを探し挿入するリスト
-            GameObject[] Elements = GameObject.FindGameObjectsWithTag("Element");
-            //近いエレメントを探す処理
-            foreach (GameObject element in Elements)
+            if (gameObject.GetComponent<Element.Element>().IsBase())
             {
-                //距離を求める
-                float dis = Vector3.Distance(transform.position, element.transform.position);
-                //範囲内かつ最小距離よりも近い場合
-                if (dis <= RANGE && dis < minDis)
+                GameObject[] Elements = GameObject.FindGameObjectsWithTag("Element");
+                //近いエレメントを探す処理
+                foreach (GameObject element in Elements)
                 {
-                    //最小距離を代入
-                    minDis = dis;
-                    //最小距離のエレメントを代入
-                    nearestElement = element;
-                    //座標の値を入れる
-                    _ElementPos = element.transform.position;
+                    //距離を求める
+                    float dis = Vector3.Distance(transform.position, element.transform.position);
+                    //範囲内かつ最小距離よりも近い場合
+                    if (dis <= RANGE && dis < minDis)
+                    {
+                        //最小距離を代入
+                        minDis = dis;
+                        //最小距離のエレメントを代入
+                        nearestElement = element;
+                        //座標の値を入れる
+                        _ElementPos = element.transform.position;
 
-                    _speed.x = (element.transform.position.x - transform.position.x) * 0.01f;
-                    _speed.y = (element.transform.position.y - transform.position.y) * 0.01f;
+                        _speed.x = (element.transform.position.x - transform.position.x) * 0.01f;
+                        _speed.y = (element.transform.position.y - transform.position.y) * 0.01f;
+                    }
                 }
             }
         }
