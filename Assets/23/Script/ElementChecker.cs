@@ -61,4 +61,13 @@ public class ElementChecker : MonoBehaviour {
         }
     }
 
+
+    void OnTriggerStay2D(Collider2D other)
+    {
+        if (FirstElement == null)
+        {
+            FirstElement = other.gameObject;
+        }
+        
+    }
 }
