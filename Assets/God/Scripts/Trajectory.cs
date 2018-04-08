@@ -62,6 +62,11 @@ namespace Play.Trajectory
             {
                 Trajectry();
             }
+
+            if (Input.GetMouseButton(0))
+            {
+                SetTrajectoryInvalid();
+            }
         }
 
 
@@ -162,6 +167,14 @@ namespace Play.Trajectory
                 Destroy(part);
             }
             _trajectory.Clear();
+        }
+
+        public void SetTrajectoryInvalid()
+        {
+            foreach(GameObject part in _trajectory)
+            {
+                part.GetComponent<SpriteRenderer>().color = Color.black;
+            }
         }
 
     }
