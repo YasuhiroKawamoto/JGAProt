@@ -52,11 +52,8 @@ namespace Play.Element
         // Use this for initialization
         void Start()
         {
-            foreach (GameObject obj in GameObject.FindGameObjectsWithTag("Element"))
-            {
-                _elementList.Add(obj);
-            }
-
+            //シーン内のエレメントを取得しリストに入れる
+            GetElementListOnScene();
             //チェッカーの取得
             _checker = transform.Find("ElementChecker").gameObject;
 
@@ -368,6 +365,17 @@ namespace Play.Element
             foreach (GameObject obj in _elementList)
             {
                 obj.GetComponent<Element>().ResetElement();
+            }
+
+        }
+
+
+        //エレメントリスト取得関数
+        public void GetElementListOnScene()
+        {
+            foreach (GameObject obj in GameObject.FindGameObjectsWithTag("Element"))
+            {
+                _elementList.Add(obj);
             }
 
         }
