@@ -317,14 +317,15 @@ namespace Play.Element
                                     _trajectoryManager.GetComponent<Trajectory.Trajectory>().EndTrajectory();
                                     _checker.GetComponent<ElementChecker>().Reset();
 
-                                    ResetElement();//次のエレメント選択に移
+                                    ResetElement();//次のエレメント選択
                                     //押していない判定
                                     _isPush = false;
                                 }
                                 else
                                 {
-                                    
-
+                                    _trajectoryManager.GetComponent<Trajectory.Trajectory>().SetTrajectoryInvalid();
+                                    ResetElement();//次のエレメント選択
+                               
                                 }
 
                             }
