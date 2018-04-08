@@ -312,6 +312,7 @@ namespace Play.Element
 
                                 if ((_senderElement.GetComponent<Element>().GetEnergy() / (double)_trajectoryManager.GetComponent<Trajectory.Trajectory>().Count) > 1.00)
                                 {
+
                                     //エレメントの状態を「送り」に指定
                                     _senderElement.gameObject.GetComponent<Element>().ChangeState(State.SEND);
                                     //送り手に受け手を設定
@@ -324,16 +325,21 @@ namespace Play.Element
                                     _checker.GetComponent<ElementChecker>().Reset();
                                     //エレメント選択のリセット
                                     ResetElement();
+
                                     //押していない判定
                                     _isPush = false;
                                 }
                                 else
                                 {
+
                                     //不可奇跡のからー変更
                                     _trajectoryManager.GetComponent<Trajectory.Trajectory>().SetTrajectoryInvalid();
                                   
                                     ResetElement();//次のエレメント選択
                                
+               
+
+
                                 }
 
                             }
