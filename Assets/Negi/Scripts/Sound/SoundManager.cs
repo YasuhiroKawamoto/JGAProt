@@ -41,7 +41,7 @@ public class SoundManager : SingletonMonoBehaviour<SoundManager>
         { return _soundSetting.SEVolume; }
         set
         {
-            _mixer.SetFloat("SEVolum", GetDecibelConversion(value));
+            _mixer.SetFloat("SEVolume", GetDecibelConversion(value));
             _soundSetting.SEVolume = value;
         }
     }
@@ -54,7 +54,7 @@ public class SoundManager : SingletonMonoBehaviour<SoundManager>
         get { return _soundSetting.BGMVolume; }
         set
         {
-            _mixer.SetFloat("BGMVolum", GetDecibelConversion(value));
+            _mixer.SetFloat("BGMVolume", GetDecibelConversion(value));
             _soundSetting.BGMVolume = value;
         }
     }
