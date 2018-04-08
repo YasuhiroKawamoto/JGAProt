@@ -47,20 +47,24 @@ namespace Play.Element
         private Sprite _normalSprite;//通常時の画像
 
         [SerializeField]
-        private Sprite _damageSprite1;//ダメージ深度1の画像
+        private Sprite _breakSprite1;//ダメージ深度1の画像
 
         [SerializeField]
-        private Sprite _damageSprite2;//ダメージ深度2の画像
+        private Sprite _breakSprite2;//ダメージ深度2の画像
 
         [SerializeField]
-        private Sprite _damageSprite3;//ダメージ深度3の画像
+        private Sprite _breakSprite3;//ダメージ深度3の画像
 
         [SerializeField]
-        private Sprite _breakSprite;//破壊状態の画像
+        private Sprite _breakSprite4;//ダメージ深度3の画像
+
+        [SerializeField]
+        private Sprite _fullBreakSprite;//破壊状態の画像
 
         private bool _isPause;
 
-
+        [SerializeField]
+        private GameObject[] _cilldrenList;//送り先リスト
 
 
 
@@ -86,6 +90,8 @@ namespace Play.Element
             _sendTargetList.Clear();
             //エナジーマネージャーのセット
             _energyManager = GameObject.Find("EnergyManager");
+
+            _cilldrenList = gameObject.transform.GetAllChild();
 
         }
 
@@ -138,7 +144,8 @@ namespace Play.Element
                     //イラストをbreakに指定
                     if (!_isBase)
                     {
-                        gameObject.GetComponent<SpriteRenderer>().sprite = _breakSprite;
+                        gameObject.GetComponent<SpriteRenderer>().sprite = _fullBreakSprite;
+                        _cilldrenList[0].GetComponent<SpriteRenderer>().sprite = _breakSprite4;
                     }
                 }
                 else if (_durability < 30)
@@ -147,7 +154,7 @@ namespace Play.Element
                     //イラストをbreakに指定
                     if (!_isBase)
                     {
-                        gameObject.GetComponent<SpriteRenderer>().sprite = _damageSprite3;
+                        _cilldrenList[0].GetComponent<SpriteRenderer>().sprite = _breakSprite3;
                     }
                 }
 
@@ -157,7 +164,7 @@ namespace Play.Element
                     //イラストをbreakに指定
                     if (!_isBase)
                     {
-                        gameObject.GetComponent<SpriteRenderer>().sprite = _damageSprite2;
+                        _cilldrenList[0].GetComponent<SpriteRenderer>().sprite = _breakSprite2;
                     }
                 }
                 else if (_durability < 70)
@@ -166,7 +173,7 @@ namespace Play.Element
                     //イラストをbreakに指定
                     if (!_isBase)
                     {
-                        gameObject.GetComponent<SpriteRenderer>().sprite = _damageSprite1;
+                        _cilldrenList[0].GetComponent<SpriteRenderer>().sprite = _breakSprite1;
                     }
                 }
 
@@ -394,6 +401,7 @@ namespace Play.Element
                     if (!_isBase)
                     {
                         gameObject.GetComponent<SpriteRenderer>().sprite = _normalSprite;
+                        _cilldrenList[0].GetComponent<SpriteRenderer>().sprite = null;
                     }
                     //状態を「待機」に変更
                     ChangeState(State.WAIT);
