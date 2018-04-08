@@ -195,13 +195,13 @@ namespace Play.Element
                 _energy = 0;
             }
 
-            if (_energy > _capacity)
+            if (_energy >= _capacity)
             {
                 _energy = _capacity;
 
                 if (_state == State.RECIEVE)
                 {
-                    ChangeState(State.WAIT);
+                    ChangeState(State.FULL);
                 }
 
             }
@@ -246,6 +246,13 @@ namespace Play.Element
 
                 case State.BREAK://壊れ
                     _isRecovery = true;
+
+                    break;
+
+                case State.FULL://満タン
+                    //送り先リストの削除
+                    _sendTargetList.Clear();
+
 
                     break;
             }
@@ -314,14 +321,13 @@ namespace Play.Element
 
                         //送り側のエネルギー減算（送り先の分だけ減少率増加）
                         _energy -= chage * _sendTargetCount * Time.deltaTime;
-
-
+                      
 
                         foreach (GameObject obj in _sendTargetList)
                         {
                             //送り先数の更新
                             _sendTargetCount = _sendTargetList.Count;
-                            if (obj.GetComponent<Element>().GetState() != State.WAIT)
+                            if (obj.GetComponent<Element>().GetState() != State.WAIT&&(obj.GetComponent<Element>().GetState() != State.FULL))
                             {
                                 obj.GetComponent<Element>().ChageEnergy(chage * Time.deltaTime);
                             }
@@ -382,6 +388,8 @@ namespace Play.Element
                     {
                         ChangeState(State.WAIT);
                     }
+
+                    
 
                 }
 
