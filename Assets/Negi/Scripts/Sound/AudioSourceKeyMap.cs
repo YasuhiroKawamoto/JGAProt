@@ -9,5 +9,6 @@ public enum AudioKey
 	BGM,
 	GlassBreak,
 	Chage,
+	EnemyDamage,
 
 }
