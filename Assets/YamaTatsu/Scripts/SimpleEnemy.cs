@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using DG.Tweening;
 
 //
 //一般的な行動をする敵
@@ -20,6 +21,14 @@ namespace Play.Enemy
         //撃破された時のエフェクト
         [SerializeField]
         private GameObject _dieEffect;
+        //移動するまでの時間
+        [SerializeField]
+        private float _moveTimeMax = 10.0f;
+        [SerializeField]
+        private float _moveTimeMin = 5.0f;
+
+        // 移動tween
+        Tweener _moveTween = null;
 
         // Use this for initialization
         void Start()
@@ -28,33 +37,26 @@ namespace Play.Enemy
             //エレメントを探す
             base.SearchElement();
             _HP = _hp;
+            Move();
         }
 
         // Update is called once per frame
         void Update()
         {
 
-            //範囲外なら移動
-            if (InRange() == true)
-            {
-                base.Move();
-            }
+           
             //範囲内なら攻撃
-            else
+            if (InRange() == false)
             {
+                if (_moveTween!=null)
+                {
+                    _moveTween.Kill();
+                    _moveTween = null;
+                }
                 Attack();
             }
 
-            //HPが0になった場合破壊する
-            if (_HP <= 0)
-            {
-                //死ぬエフェクト
-                if (_dieEffect != null)
-                {
-                    base.SpawnEffect(_dieEffect, transform.position);
-                }
-                Destroy(this.gameObject);
-            }
+            
         }
 
         //攻撃 
@@ -93,10 +95,27 @@ namespace Play.Enemy
             return true;
         }
 
+        protected override void Move()
+        {
+            float moveTime = Random.Range(_moveTimeMin, _moveTimeMax);
+
+            _moveTween = transform.DOMove(_ElementPos, moveTime);
+        }
+
         //ダメージをセット
         public override void Damage(int damage)
         {
             base.Damage(damage);
+            //HPが0になった場合破壊する
+            if (_HP <= 0)
+            {
+                //死ぬエフェクト
+                if (_dieEffect != null)
+                {
+                    base.SpawnEffect(_dieEffect, transform.position);
+                }
+                Destroy(this.gameObject);
+            }
         }
 
     }
