@@ -1236,9 +1236,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _playTime: 30
+  _killTarget: 10
   _timer: {fileID: 0}
   _startButton: {fileID: 0}
   _overtext: {fileID: 0}
+  _cleartext: {fileID: 0}
   _gameState: 0
   _energyManager: {fileID: 0}
   _energyPrefabs: {fileID: 1826588377619374, guid: a069be0080894b74983779516b2fd786,

@@ -131,6 +131,10 @@ namespace Play.Enemy
                     SoundManager.Instance.Play(AudioKey.EnemyDead);
                     base.SpawnEffect(_dieEffect, transform.position);
                 }
+
+                // 撃破数を増やす
+                KillData();
+
                 Destroy(this.gameObject);
             }
         }
