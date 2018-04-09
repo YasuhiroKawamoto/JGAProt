@@ -392,6 +392,7 @@ namespace Play.Element
         public void GetElementListOnScene()
         {
             //シーン上のすべての「Element」タグ付きオブジェクトを取得
+            _elementList = new List<GameObject>();
             foreach (GameObject obj in GameObject.FindGameObjectsWithTag("Element"))
             {
                 _elementList.Add(obj);
