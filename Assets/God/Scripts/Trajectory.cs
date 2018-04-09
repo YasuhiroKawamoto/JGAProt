@@ -192,5 +192,9 @@ namespace Play.Trajectory
             _lastObj = null;
         }
 
+        public void DeleteTrajectoyRoot()
+        {
+            Destroy(_trajectoryRoot);
+        }
     }
 }
