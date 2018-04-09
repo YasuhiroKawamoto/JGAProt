@@ -73,11 +73,6 @@ namespace Play.Trajectory
             {
                 Trajectry();
             }
-
-            if (Input.GetMouseButton(1))
-            {
-                DeleteTrajectoyRoot();
-            }
         }
 
 
