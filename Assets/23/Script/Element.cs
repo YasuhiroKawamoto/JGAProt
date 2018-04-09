@@ -61,7 +61,7 @@ namespace Play.Element
         [SerializeField]
         private Sprite _fullBreakSprite;//破壊状態の画像
 
-        private bool _isPause;
+        private bool _isPause;//ポーズ状態か
 
         [SerializeField]
         private GameObject[] _cilldrenList;//送り先リスト
@@ -73,7 +73,7 @@ namespace Play.Element
         void Start()
         {
             _isPause = false;
-            //イラストをnormalに指定
+            //イラストをnormalに指定（ベースは除外）
             if (!_isBase)
             {
                 gameObject.GetComponent<SpriteRenderer>().sprite = _normalSprite;
@@ -90,7 +90,7 @@ namespace Play.Element
             _sendTargetList.Clear();
             //エナジーマネージャーのセット
             _energyManager = GameObject.Find("EnergyManager");
-
+            //子オブジェクトのリスト
             _cilldrenList = gameObject.transform.GetAllChild();
 
         }
@@ -121,6 +121,7 @@ namespace Play.Element
         /// <param name="damage"></param>
         public void ReceiveDamage(int damage)
         {
+            //エネルギーがある場合はエネルギーで受ける
             if (_energy > 0)
             {
                 _energy -= damage;
@@ -131,17 +132,17 @@ namespace Play.Element
                 }
 
             }
+            //エネルギーがなければ耐久度で受ける
             else
             {
-
                 _durability -= damage;
-
+                //残り耐久度に応じて破損状態の変更
                 if (_durability < 0)
                 {
                     //破壊状態にする
                     ChangeState(State.BREAK);
                     _capacity = 0.00;
-                    //イラストをbreakに指定
+                    //ヒビイメージの更新
                     if (!_isBase)
                     {
                         gameObject.GetComponent<SpriteRenderer>().sprite = _fullBreakSprite;
@@ -150,18 +151,19 @@ namespace Play.Element
                 }
                 else if (_durability < 30)
                 {
+                    //最大容量の変更
                     _capacity = 30.00;
-                    //イラストをbreakに指定
+                    //ヒビイメージの更新
                     if (!_isBase)
                     {
                         _cilldrenList[0].GetComponent<SpriteRenderer>().sprite = _breakSprite3;
                     }
                 }
-
                 else if (_durability < 50)
                 {
+                    //最大容量の変更
                     _capacity = 50.00;
-                    //イラストをbreakに指定
+                    //ヒビイメージの更新
                     if (!_isBase)
                     {
                         _cilldrenList[0].GetComponent<SpriteRenderer>().sprite = _breakSprite2;
@@ -169,17 +171,15 @@ namespace Play.Element
                 }
                 else if (_durability < 70)
                 {
+                    //最大容量の変更
                     _capacity = 70.00;
-                    //イラストをbreakに指定
+                    //ヒビイメージの更新
                     if (!_isBase)
                     {
                         _cilldrenList[0].GetComponent<SpriteRenderer>().sprite = _breakSprite1;
                     }
                 }
-
             }
-
-
         }
 
 
@@ -189,23 +189,24 @@ namespace Play.Element
         /// <param name="chage"></param>
         public void ChageEnergy(double chage)
         {
+            //エネルギーに加算
             _energy += chage;
+            //エネルギーがマイナスになった際0にする
             if (_energy < 0)
             {
                 _energy = 0;
             }
-
+            //エネルギーが容量以上になった際
             if (_energy >= _capacity)
             {
+                //エネルギーを最大値で固定
                 _energy = _capacity;
-
+                //「受け」状態を「満タン」に変更
                 if (_state == State.RECIEVE)
                 {
                     ChangeState(State.FULL);
                 }
-
             }
-
         }
 
         //エレメントの状態取得
@@ -223,9 +224,9 @@ namespace Play.Element
         //エレメントの状態変更関数
         public void ChangeState(State state)
         {
+            //ステータス変更
             _state = state;
-
-            
+                       
             switch (_state)
             {
                 case State.WAIT://非指定
@@ -233,27 +234,21 @@ namespace Play.Element
                     _sendTargetList.Clear();
                     //エネルギーの端数処理（暫定）
                     _energy = System.Math.Round(_energy, System.MidpointRounding.AwayFromZero);
-
                     break;
                 case State.SEND://送り
-
                     break;
 
                 case State.RECIEVE://受け
-
-
                     break;
 
                 case State.BREAK://壊れ
+                    //回復状態にする
                     _isRecovery = true;
-
                     break;
 
                 case State.FULL://満タン
                     //送り先リストの削除
                     _sendTargetList.Clear();
-
-
                     break;
             }
         }
@@ -269,12 +264,11 @@ namespace Play.Element
         }
 
         /// <summary>
-        /// 重複チェック(まだみかん)
+        /// 重複チェック(まだ未完成)
         /// </summary>
         /// <returns></returns>     
         public bool CheckDuplication()
         {
-
             HashSet<GameObject> _hashSet = new HashSet<GameObject>(_sendTargetList);
 
             //重複がある場合は要素数が減る
@@ -310,7 +304,7 @@ namespace Play.Element
             if (!_isRecovery)
             {
                 //送る対象がある場合
-                if (_sendTargetList.Count != 0 && _state != 0)
+                if (_sendTargetList.Count != 0 && _state != State.WAIT)
                 {
                     //チャージ倍率の設定
                     double chage = _energyManager.GetComponent<EnergyManager>().GetChargeAmount();
@@ -322,12 +316,11 @@ namespace Play.Element
                         //送り側のエネルギー減算（送り先の分だけ減少率増加）
                         _energy -= chage * _sendTargetCount * Time.deltaTime;
                       
-
                         foreach (GameObject obj in _sendTargetList)
                         {
                             //送り先数の更新
                             _sendTargetCount = _sendTargetList.Count;
-                            if (obj.GetComponent<Element>().GetState() != State.WAIT&&(obj.GetComponent<Element>().GetState() != State.FULL))
+                            if (obj.GetComponent<Element>().GetState() == State.WAIT||obj.GetComponent<Element>().GetState() == State.RECIEVE||obj.GetComponent<Element>().GetState() == State.SEND)
                             {
                                 obj.GetComponent<Element>().ChageEnergy(chage * Time.deltaTime);
                             }
@@ -342,13 +335,11 @@ namespace Play.Element
                         {
                             //対象をリストから除く
                             _sendTargetList.Remove(_exclusionObj);
+                            //リスト排除対象オブジェクトを破棄
                             _exclusionObj = null;
                             //送り先数の更新
                             _sendTargetCount = _sendTargetList.Count;
-
                         }
-
-
                     }
                     else
                     {
@@ -376,11 +367,11 @@ namespace Play.Element
                         {
                             //対象をリストから除く
                             _sendTargetList.Remove(_exclusionObj);
+                            //リスト排除対象オブジェクトを破棄
                             _exclusionObj = null;
                         }
                         //状態を「待機」にする。
                         ChangeState(State.WAIT);
-
                     }
 
                     //送り先がなくなれば「待機」状態にする
@@ -388,15 +379,11 @@ namespace Play.Element
                     {
                         ChangeState(State.WAIT);
                     }
-
-                    
-
                 }
-
             }
             else
             {
-
+                //タイマー減算
                 _recoveryTime -= 1.00 * Time.deltaTime;
                 //回復に必要な時間経過後
                 if (_recoveryTime < 0.00)
@@ -409,10 +396,12 @@ namespace Play.Element
                     if (!_isBase)
                     {
                         gameObject.GetComponent<SpriteRenderer>().sprite = _normalSprite;
+                        //ヒビ画像を消す
                         _cilldrenList[0].GetComponent<SpriteRenderer>().sprite = null;
                     }
                     //状態を「待機」に変更
                     ChangeState(State.WAIT);
+                    //回復フラグを折る
                     _isRecovery = false;
                     //回復時間の再設定
                     _recoveryTime = 10;
@@ -432,18 +421,19 @@ namespace Play.Element
         //エレメント情報のリセット関数
         public void ResetElement()
         {
+            //修復フラグのリセット
             _isRecovery = false;
-
+            //回復時間のリセット
             _recoveryTime = 10;
-
+            //エネルギーのリセット
             _energy = 0;
-
+            //最大容量のリセット
             _capacity = 100;
-
+            //耐久度のリセット
             _durability = 100;
-
+            //送り先リストのクリア
             _sendTargetList.Clear();
-
+            //待機状態に変更
             ChangeState(State.WAIT);
 
         }
@@ -452,13 +442,16 @@ namespace Play.Element
         //ポーズ切替関数
         public void SetIsPause()
         {
+            //ポーズ切り替え
             _isPause = !_isPause;
 
 
         }
 
+        //ポーズ状態確認関数
         public bool GetIsPause()
         {
+            //ポーズ状態を返す
            return _isPause;
 
 

@@ -15,10 +15,6 @@ namespace Play.Element
         [SerializeField]
         private bool _isChage;//チャージ状態かどうか？
 
-     
-
-
-
         // Use this for initialization
         void Start()
         {
@@ -29,6 +25,7 @@ namespace Play.Element
         // Update is called once per frame
         void Update()
         {
+            //非ポーズ状態で稼働
             if (!gameObject.GetComponent<Element>().GetIsPause())
             {
                 //チャージ状態なら
@@ -37,7 +34,6 @@ namespace Play.Element
                     //時間経過とともに回復
                     gameObject.GetComponent<Element>().ChageEnergy(_chageSpeed * Time.deltaTime);
                 }
-
                 //「待機」以外では回復しない
                 if (gameObject.GetComponent<Element>().GetState() != State.WAIT)
                 {

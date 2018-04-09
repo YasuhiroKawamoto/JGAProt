@@ -10,7 +10,7 @@ using UnityEngine.EventSystems;
 /// 
 namespace Play.Element
 {
-    public enum State
+    public enum State//stateの種類
     {
         WAIT, SEND, RECIEVE, BREAK, FULL
     }
@@ -27,6 +27,7 @@ namespace Play.Element
 
         [SerializeField]
         GameObject _trajectoryManager;//軌跡マネージャ
+
         [SerializeField]
         List<GameObject> _elementList;//エレメントリスト（エレメント管理用）
 
@@ -68,7 +69,7 @@ namespace Play.Element
             //軌跡マネージャがある場合動作
             if (_trajectoryManager)
             {
-                //エレメント選択処理
+                //エレメント選択処理（現在はVer3）
                 ConfigElement3();
             }
         }
@@ -94,11 +95,9 @@ namespace Play.Element
         //連続選択用状態管理
         void ToNextElement()
         {
-
-
             //送り側のリセット
             _senderElement = null;//エレメント（送る側）
-                                  //受け側のリセット
+            //受け側のリセット
             _senderElement = _receiverElement;
             _receiverElement = null;//エレメント（受ける側）
 
@@ -253,9 +252,19 @@ namespace Play.Element
         }
 
 
-        //エレメント設定３
+        //エレメント設定３（現行）
         void ConfigElement3()
         {
+            // Vector3でマウス位置座標を取得する
+            _mousePos = Input.mousePosition;
+            // Z軸修正
+            _mousePos.z = 10f;
+            // マウス位置座標をスクリーン座標からワールド座標に変換する
+            _checkerPos = Camera.main.ScreenToWorldPoint(_mousePos);
+            // ワールド座標に変換されたマウス座標を代入
+            _checker.transform.position = _checkerPos;
+
+
             if (Input.GetMouseButtonDown(0))
             {
                 //押している判定
@@ -269,14 +278,7 @@ namespace Play.Element
 
             if (_isPush)
             {
-                // Vector3でマウス位置座標を取得する
-                _mousePos = Input.mousePosition;
-                // Z軸修正
-                _mousePos.z = 10f;
-                // マウス位置座標をスクリーン座標からワールド座標に変換する
-                _checkerPos = Camera.main.ScreenToWorldPoint(_mousePos);
-                // ワールド座標に変換されたマウス座標を代入
-                _checker.transform.position = _checkerPos;
+               
 
                 //マウス操作で受け送り設定
                 if (!_senderElement)
@@ -301,9 +303,10 @@ namespace Play.Element
                         //受け側のエレメントが「待機」or「受け」の場合なら
                         if (_receiverElement.GetComponent<Element>().GetState() == State.WAIT || _receiverElement.GetComponent<Element>().GetState() == State.RECIEVE)
                         {
+                            //送る側のエレメントがある場合
                             if (_senderElement)
                             {
-
+                                //送りエレメントから受けエレメント間の軌跡の距離（obj数）と送り側のエネルギーで計算
                                 if ((_senderElement.GetComponent<Element>().GetEnergy() / (double)_trajectoryManager.GetComponent<Trajectory.Trajectory>().Count) > 1.00)
                                 {
 
@@ -324,7 +327,7 @@ namespace Play.Element
                                 }
                                 else
                                 {
-                                    //不可奇跡のからー変更
+                                    //不可軌跡のカラー変更および削除
                                     _trajectoryManager.GetComponent<Trajectory.Trajectory>().SetTrajectoryInvalid();
                                     //次のエレメント選択
                                     ResetElement();
@@ -336,9 +339,9 @@ namespace Play.Element
                         }
                         else
                         {
-                            //不可奇跡のからー変更
+                            //不可軌跡のカラー変更および削除
                             _trajectoryManager.GetComponent<Trajectory.Trajectory>().SetTrajectoryInvalid();
-                            //次のエレメント選択
+                            //エレメント選択状態のリセット
                             ResetElement();
                             //押していない判定
                             _isPush = false;
@@ -377,6 +380,7 @@ namespace Play.Element
         //エレメント一括リセット
         public void ResetElements()
         {
+            //_elementList内のobjectのリセット
             foreach (GameObject obj in _elementList)
             {
                 obj.GetComponent<Element>().ResetElement();
@@ -387,6 +391,7 @@ namespace Play.Element
         //エレメントリスト取得関数
         public void GetElementListOnScene()
         {
+            //シーン上のすべての「Element」タグ付きオブジェクトを取得
             foreach (GameObject obj in GameObject.FindGameObjectsWithTag("Element"))
             {
                 _elementList.Add(obj);
