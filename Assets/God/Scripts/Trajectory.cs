@@ -73,6 +73,11 @@ namespace Play.Trajectory
             {
                 Trajectry();
             }
+
+            if (Input.GetMouseButton(1))
+            {
+                DeleteTrajectoyRoot();
+            }
         }
 
 
@@ -198,7 +203,11 @@ namespace Play.Trajectory
 
         public void DeleteTrajectoyRoot()
         {
-            Destroy(_trajectoryRootValue);
+            if(_trajectoryRootValue != null)
+            {
+                Destroy(_trajectoryRootValue);
+            }
         }
     }
 }
+            
