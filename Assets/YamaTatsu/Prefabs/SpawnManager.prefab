@@ -53,6 +53,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ENEMY_NUM: 5
   enemies: {fileID: 1115130713092294, guid: 6f8a58a8037c472408160c50ecd50916, type: 2}
-  setTime: 5
-  maxNum: 5
-  minNum: -5
+  intervalTime: 5
+  maxNumX: 10
+  minNumX: -10
+  maxNumY: 4
+  minNumY: -4
