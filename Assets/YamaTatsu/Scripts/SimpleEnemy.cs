@@ -73,6 +73,9 @@ namespace Play.Enemy
                 {
                     base.SpawnEffect(_attackEffect, _ElementPos);
                 }
+
+                //攻撃のSEを入れるところ
+
                 //エレメントの攻撃関数を受け取る
                 nearestElement.GetComponent<Element.Element>().ReceiveDamage(_damage);
                 _timeCnt = 0.0f;
@@ -105,6 +108,9 @@ namespace Play.Enemy
         //ダメージをセット
         public override void Damage(int damage)
         {
+            //ヒットした時にSEを入れるところ
+
+            //
             base.Damage(damage);
             //HPが0になった場合破壊する
             if (_HP <= 0)
@@ -112,6 +118,7 @@ namespace Play.Enemy
                 //死ぬエフェクト
                 if (_dieEffect != null)
                 {
+                    //死ぬときのSEを入れるところ
                     base.SpawnEffect(_dieEffect, transform.position);
                 }
                 Destroy(this.gameObject);
