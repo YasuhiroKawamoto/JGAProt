@@ -105,7 +105,11 @@ namespace Play
             {
                 foreach (var obj in _resetList)
                 {
-                    GameObject.Destroy(obj);
+                    if (obj != null)
+                    {
+                        obj.SetActive(false);
+                    }
+                    Destroy(obj);
                 }
             }
             // エネルギー周りの初期化
@@ -144,6 +148,8 @@ namespace Play
             if (_timer.IsCounting == false)
             {
                 _energyManager.PauseElements();
+                // 軌跡を消す
+                _trajectory.DeleteTrajectoyRoot();
 
                 _gameState = State.Over;
                 // 表示、非表示
