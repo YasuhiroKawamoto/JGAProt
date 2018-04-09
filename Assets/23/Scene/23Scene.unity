@@ -748,8 +748,10 @@ MonoBehaviour:
   ENEMY_NUM: 5
   enemies: {fileID: 1115130713092294, guid: 6f8a58a8037c472408160c50ecd50916, type: 2}
   setTime: 5
-  maxNum: 0
-  minNum: 0
+  maxNumX: 0
+  minNumX: 0
+  maxNumY: 0
+  minNumY: 0
 --- !u!1001 &1064121238
 Prefab:
   m_ObjectHideFlags: 0

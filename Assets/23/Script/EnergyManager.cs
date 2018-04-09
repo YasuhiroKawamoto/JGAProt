@@ -391,6 +391,8 @@ namespace Play.Element
         //エレメントリスト取得関数
         public void GetElementListOnScene()
         {
+            //リストの削除
+            _elementList.Clear();
             //シーン上のすべての「Element」タグ付きオブジェクトを取得
             foreach (GameObject obj in GameObject.FindGameObjectsWithTag("Element"))
             {
