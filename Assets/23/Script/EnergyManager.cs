@@ -318,7 +318,7 @@ namespace Play.Element
                                     _receiverElement.GetComponent<Element>().ChangeState(State.RECIEVE);
                                     //軌跡に終わりを告げる                     
                                     _trajectoryManager.GetComponent<Trajectory.Trajectory>().EndTrajectory();
-                                    SoundManager.Instance.Play("Chage");
+                                    SoundManager.Instance.PlayOneShot(AudioKey.Chage);
 
                                     //チェッカーのリセット
                                     _checker.GetComponent<ElementChecker>().Reset();
