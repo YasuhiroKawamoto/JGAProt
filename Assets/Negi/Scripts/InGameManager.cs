@@ -8,7 +8,7 @@ namespace Play
     public class InGameManager : MonoBehaviour {
 
         // ゲームシーンの状態
-        enum State
+        public enum State
         {
             None,
             Play,
@@ -37,6 +37,10 @@ namespace Play
         // 現在の状態
         [SerializeField,ReadOnly]
         private State _gameState = State.None;
+        public State GameState {
+            get { return _gameState; }
+            private set { _gameState = value; }
+        }
 
         // エネルギーの管理クラス
         [SerializeField]
@@ -52,6 +56,11 @@ namespace Play
 
         // リセットするとき削除するオブジェクト
         private List<GameObject> _resetList = null;
+
+        public void SetResetObject(GameObject obj)
+        {
+            _resetList.Add(obj);
+        }
 
         /// <summary>
         /// 初期化処理
@@ -69,6 +78,9 @@ namespace Play
             _startButton.onClick.AddListener(() => {
                 GameStart();
             });
+
+            // BGM
+            SoundManager.Instance.Play(AudioKey.BGM);
         }
 
         /// <summary>
@@ -105,7 +117,11 @@ namespace Play
             {
                 foreach (var obj in _resetList)
                 {
-                    GameObject.Destroy(obj);
+                    if (obj != null)
+                    {
+                        obj.SetActive(false);
+                    }
+                    Destroy(obj);
                 }
             }
             // エネルギー周りの初期化
@@ -144,7 +160,7 @@ namespace Play
             if (_timer.IsCounting == false)
             {
                 _energyManager.PauseElements();
-
+                
                 _gameState = State.Over;
                 // 表示、非表示
                 _overtext.gameObject.SetActive(true);

@@ -30,10 +30,11 @@ namespace Play.Enemy
         // 移動tween
         Tweener _moveTween = null;
 
+        
+
         // Use this for initialization
         void Start()
         {
-
             //エレメントを探す
             base.SearchElement();
             _HP = _hp;
@@ -43,7 +44,10 @@ namespace Play.Enemy
         // Update is called once per frame
         void Update()
         {
-
+            if(PlayManager.Instance.GameManager.GameState != InGameManager.State.Play)
+            {
+                return;
+            }
            
             //範囲内なら攻撃
             if (InRange() == false)
@@ -55,8 +59,6 @@ namespace Play.Enemy
                 }
                 Attack();
             }
-
-            
         }
 
         //攻撃 
@@ -73,9 +75,18 @@ namespace Play.Enemy
                 {
                     base.SpawnEffect(_attackEffect, _ElementPos);
                 }
+
+                //攻撃のSEを入れるところ
+                //ヒットした時にSEを入れるところ
+                SoundManager.Instance.Play(AudioKey.EnemyAttack);
                 //エレメントの攻撃関数を受け取る
                 nearestElement.GetComponent<Element.Element>().ReceiveDamage(_damage);
                 _timeCnt = 0.0f;
+
+                //　アタック後ランダムなエレメントへ移動
+                //エレメントを探す
+                base.SearchRandomElement();
+                Move();
             }
         }
 
@@ -105,6 +116,9 @@ namespace Play.Enemy
         //ダメージをセット
         public override void Damage(int damage)
         {
+            //ヒットした時にSEを入れるところ
+            SoundManager.Instance.Play(AudioKey.EnemyDamage);
+            //
             base.Damage(damage);
             //HPが0になった場合破壊する
             if (_HP <= 0)
@@ -112,6 +126,9 @@ namespace Play.Enemy
                 //死ぬエフェクト
                 if (_dieEffect != null)
                 {
+                    //死ぬときのSEを入れるところ
+                    //ヒットした時にSEを入れるところ
+                    SoundManager.Instance.Play(AudioKey.EnemyDead);
                     base.SpawnEffect(_dieEffect, transform.position);
                 }
                 Destroy(this.gameObject);

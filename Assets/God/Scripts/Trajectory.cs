@@ -19,6 +19,7 @@ namespace Play.Trajectory
         [SerializeField]
         private GameObject _trajectoryRoot;
 
+        [SerializeField, ReadOnly]
         // ルートオブジェクト(変数)
         private GameObject _trajectoryRootValue;
 
@@ -72,6 +73,11 @@ namespace Play.Trajectory
             if (IsContinueTranjectory())
             {
                 Trajectry();
+            }
+
+            if (_trajectoryRootValue == null)
+            {
+                Debug.Log("aho");
             }
         }
 
@@ -196,9 +202,10 @@ namespace Play.Trajectory
             _lastObj = null;
         }
 
-        public void DeleteTrajectoyRoot()
+        private void OnDestroy()
         {
-            Destroy(_trajectoryRootValue);
+            Destroy(_trajectoryRootValue.gameObject);
         }
     }
 }
+            

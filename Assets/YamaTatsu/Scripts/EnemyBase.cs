@@ -32,7 +32,8 @@ namespace Play.Enemy
         //HP
         protected int _HP = 10;
         //与えるダメージ
-        protected int _damage = 30;
+        [SerializeField]
+        protected int _damage = 10;
 
         //買ううんと
         protected float _timeCnt = 0.0f;
@@ -73,6 +74,18 @@ namespace Play.Enemy
                     }
                 }
             }
+        }
+
+        //ランダムなエレメントを探す
+        virtual protected void SearchRandomElement()
+        {
+
+            List<GameObject> Elements = new List<GameObject>(GameObject.FindGameObjectsWithTag("Element"));
+
+            var random = Random.Range(0, Elements.Count);
+
+            //座標の値を入れる
+            _ElementPos = Elements[random].transform.position;
         }
 
         //エフェクトの生成
