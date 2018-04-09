@@ -318,6 +318,8 @@ namespace Play.Element
                                     _receiverElement.GetComponent<Element>().ChangeState(State.RECIEVE);
                                     //軌跡に終わりを告げる                     
                                     _trajectoryManager.GetComponent<Trajectory.Trajectory>().EndTrajectory();
+                                    SoundManager.Instance.Play("Chage");
+
                                     //チェッカーのリセット
                                     _checker.GetComponent<ElementChecker>().Reset();
                                     //エレメント選択のリセット
