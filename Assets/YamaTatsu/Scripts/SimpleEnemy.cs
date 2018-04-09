@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using DG.Tweening;
 
 //
 //一般的な行動をする敵
@@ -20,40 +21,43 @@ namespace Play.Enemy
         //撃破された時のエフェクト
         [SerializeField]
         private GameObject _dieEffect;
+        //移動するまでの時間
+        [SerializeField]
+        private float _moveTimeMax = 10.0f;
+        [SerializeField]
+        private float _moveTimeMin = 5.0f;
+
+        // 移動tween
+        Tweener _moveTween = null;
+
+        
 
         // Use this for initialization
         void Start()
         {
-
             //エレメントを探す
             base.SearchElement();
             _HP = _hp;
+            Move();
         }
 
         // Update is called once per frame
         void Update()
         {
-
-            //範囲外なら移動
-            if (InRange() == true)
+            if(PlayManager.Instance.GameManager.GameState != InGameManager.State.Play)
             {
-                base.Move();
+                return;
             }
+           
             //範囲内なら攻撃
-            else
+            if (InRange() == false)
             {
-                Attack();
-            }
-
-            //HPが0になった場合破壊する
-            if (_HP <= 0)
-            {
-                //死ぬエフェクト
-                if (_dieEffect != null)
+                if (_moveTween!=null)
                 {
-                    base.SpawnEffect(_dieEffect, transform.position);
+                    _moveTween.Kill();
+                    _moveTween = null;
                 }
-                Destroy(this.gameObject);
+                Attack();
             }
         }
 
@@ -71,9 +75,18 @@ namespace Play.Enemy
                 {
                     base.SpawnEffect(_attackEffect, _ElementPos);
                 }
+
+                //攻撃のSEを入れるところ
+                //ヒットした時にSEを入れるところ
+                SoundManager.Instance.Play(AudioKey.EnemyAttack);
                 //エレメントの攻撃関数を受け取る
                 nearestElement.GetComponent<Element.Element>().ReceiveDamage(_damage);
                 _timeCnt = 0.0f;
+
+                //　アタック後ランダムなエレメントへ移動
+                //エレメントを探す
+                base.SearchRandomElement();
+                Move();
             }
         }
 
@@ -93,10 +106,33 @@ namespace Play.Enemy
             return true;
         }
 
+        protected override void Move()
+        {
+            float moveTime = Random.Range(_moveTimeMin, _moveTimeMax);
+
+            _moveTween = transform.DOMove(_ElementPos, moveTime);
+        }
+
         //ダメージをセット
         public override void Damage(int damage)
         {
+            //ヒットした時にSEを入れるところ
+            SoundManager.Instance.Play(AudioKey.EnemyDamage);
+            //
             base.Damage(damage);
+            //HPが0になった場合破壊する
+            if (_HP <= 0)
+            {
+                //死ぬエフェクト
+                if (_dieEffect != null)
+                {
+                    //死ぬときのSEを入れるところ
+                    //ヒットした時にSEを入れるところ
+                    SoundManager.Instance.Play(AudioKey.EnemyDead);
+                    base.SpawnEffect(_dieEffect, transform.position);
+                }
+                Destroy(this.gameObject);
+            }
         }
 
     }

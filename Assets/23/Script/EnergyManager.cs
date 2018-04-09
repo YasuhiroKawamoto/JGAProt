@@ -318,6 +318,8 @@ namespace Play.Element
                                     _receiverElement.GetComponent<Element>().ChangeState(State.RECIEVE);
                                     //軌跡に終わりを告げる                     
                                     _trajectoryManager.GetComponent<Trajectory.Trajectory>().EndTrajectory();
+                                    SoundManager.Instance.PlayOneShot(AudioKey.Chage);
+
                                     //チェッカーのリセット
                                     _checker.GetComponent<ElementChecker>().Reset();
                                     //エレメント選択のリセット
@@ -394,6 +396,7 @@ namespace Play.Element
             //リストの削除
             _elementList.Clear();
             //シーン上のすべての「Element」タグ付きオブジェクトを取得
+            _elementList = new List<GameObject>();
             foreach (GameObject obj in GameObject.FindGameObjectsWithTag("Element"))
             {
                 _elementList.Add(obj);

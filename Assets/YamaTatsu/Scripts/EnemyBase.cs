@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using DG.Tweening;
 
 
 /// <summary>
@@ -31,15 +32,16 @@ namespace Play.Enemy
         //HP
         protected int _HP = 10;
         //与えるダメージ
-        protected int _damage = 30;
+        [SerializeField]
+        protected int _damage = 10;
 
         //買ううんと
         protected float _timeCnt = 0.0f;
 
         //移動処理
-        protected void Move()
+        virtual protected void Move()
         {
-            transform.position += _speed;
+            transform.DOMove(_ElementPos, 1.0f);
         }
 
         //近いエレメントを探す
@@ -65,11 +67,25 @@ namespace Play.Enemy
                         //座標の値を入れる
                         _ElementPos = element.transform.position;
 
-                        _speed.x = (element.transform.position.x - transform.position.x) * 0.01f;
-                        _speed.y = (element.transform.position.y - transform.position.y) * 0.01f;
+                        
+
+                        //_speed.x = (element.transform.position.x - transform.position.x) * 0.01f;
+                        //_speed.y = (element.transform.position.y - transform.position.y) * 0.01f;
                     }
                 }
             }
+        }
+
+        //ランダムなエレメントを探す
+        virtual protected void SearchRandomElement()
+        {
+
+            List<GameObject> Elements = new List<GameObject>(GameObject.FindGameObjectsWithTag("Element"));
+
+            var random = Random.Range(0, Elements.Count);
+
+            //座標の値を入れる
+            _ElementPos = Elements[random].transform.position;
         }
 
         //エフェクトの生成

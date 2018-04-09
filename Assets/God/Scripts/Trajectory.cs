@@ -19,6 +19,11 @@ namespace Play.Trajectory
         [SerializeField]
         private GameObject _trajectoryRoot;
 
+        [SerializeField, ReadOnly]
+        // ルートオブジェクト(変数)
+        private GameObject _trajectoryRootValue;
+
+
         // タップ開始エレメント
         private Element.Element _element;
 
@@ -58,7 +63,7 @@ namespace Play.Trajectory
             //_effects = new List<Attack>();
 
             // 起動時に軌跡のルートを作成
-            _trajectoryRoot = Instantiate(_trajectoryRoot);
+            _trajectoryRootValue = Instantiate(_trajectoryRoot);
         }
 
         // Update is called once per frame
@@ -68,6 +73,11 @@ namespace Play.Trajectory
             if (IsContinueTranjectory())
             {
                 Trajectry();
+            }
+
+            if (_trajectoryRootValue == null)
+            {
+                Debug.Log("aho");
             }
         }
 
@@ -93,7 +103,7 @@ namespace Play.Trajectory
             {
                 _plot.transform.position = worldPos;
 
-                _lastObj = Instantiate(_plot, _trajectoryRoot.transform);
+                _lastObj = Instantiate(_plot, _trajectoryRootValue.transform);
                 _trajectory.Add(_lastObj);
             }
         }
@@ -124,7 +134,7 @@ namespace Play.Trajectory
 
             Vector3 pos = part.transform.position;
 
-            Attack atkObj = Instantiate(_attack, pos, Quaternion.identity, _trajectoryRoot.transform);
+            Attack atkObj = Instantiate(_attack, pos, Quaternion.identity, _trajectoryRootValue.transform);
             atkObj.Parent = _element;
             atkObj.Index = index;
             //_effects.Add( atkObj);
@@ -192,9 +202,10 @@ namespace Play.Trajectory
             _lastObj = null;
         }
 
-        public void DeleteTrajectoyRoot()
+        private void OnDestroy()
         {
-            Destroy(_trajectoryRoot);
+            Destroy(_trajectoryRootValue.gameObject);
         }
     }
 }
+            

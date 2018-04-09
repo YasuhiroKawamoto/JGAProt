@@ -145,6 +145,7 @@ namespace Play.Element
                     //ヒビイメージの更新
                     if (!_isBase)
                     {
+                        SoundManager.Instance.Play(AudioKey.GlassBreak);
                         gameObject.GetComponent<SpriteRenderer>().sprite = _fullBreakSprite;
                         _cilldrenList[0].GetComponent<SpriteRenderer>().sprite = _breakSprite4;
                     }
@@ -156,6 +157,7 @@ namespace Play.Element
                     //ヒビイメージの更新
                     if (!_isBase)
                     {
+                        SoundManager.Instance.Play(AudioKey.GlassBreak);
                         _cilldrenList[0].GetComponent<SpriteRenderer>().sprite = _breakSprite3;
                     }
                 }
@@ -166,6 +168,7 @@ namespace Play.Element
                     //ヒビイメージの更新
                     if (!_isBase)
                     {
+                        SoundManager.Instance.Play(AudioKey.GlassBreak);
                         _cilldrenList[0].GetComponent<SpriteRenderer>().sprite = _breakSprite2;
                     }
                 }
@@ -176,6 +179,7 @@ namespace Play.Element
                     //ヒビイメージの更新
                     if (!_isBase)
                     {
+                        SoundManager.Instance.Play(AudioKey.GlassBreak);
                         _cilldrenList[0].GetComponent<SpriteRenderer>().sprite = _breakSprite1;
                     }
                 }
