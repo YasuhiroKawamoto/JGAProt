@@ -4,5 +4,10 @@
 public enum AudioKey
 {
 	SE,
+	EnemyAttack,
+	EnemyDead,
+	BGM,
+	GlassBreak,
+	Chage,
 
 }
