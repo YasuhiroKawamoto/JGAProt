@@ -122,9 +122,10 @@ namespace Play.Trajectory
         {
             yield return new WaitForSeconds(seconds);
 
-            Attack atkObj = Instantiate(_attack, _trajectoryRoot.transform);
+            Vector3 pos = part.transform.position;
+
+            Attack atkObj = Instantiate(_attack, pos, Quaternion.identity, _trajectoryRoot.transform);
             atkObj.Parent = _element;
-            _attack.transform.position = part.transform.position;
             atkObj.Index = index;
             //_effects.Add( atkObj);
 
