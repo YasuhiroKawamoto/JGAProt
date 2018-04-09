@@ -115,6 +115,15 @@ public class SoundManager : SingletonMonoBehaviour<SoundManager>
     }
 
     /// <summary>
+    /// 再生中か？
+    /// </summary>
+    /// <param name="key"></param>
+    /// <returns></returns>
+    public bool IsPlaying(AudioKey key)
+    {
+        return _audioDatas[(int)key].isPlaying;
+    }
+    /// <summary>
     /// 設定ファイルを読み込む
     /// </summary>
     public void LoadSettingFile()
