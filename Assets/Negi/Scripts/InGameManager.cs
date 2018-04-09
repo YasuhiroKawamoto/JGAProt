@@ -78,6 +78,9 @@ namespace Play
             _startButton.onClick.AddListener(() => {
                 GameStart();
             });
+
+            // BGM
+            SoundManager.Instance.Play(AudioKey.BGM);
         }
 
         /// <summary>
