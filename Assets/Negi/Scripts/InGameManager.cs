@@ -148,9 +148,7 @@ namespace Play
             if (_timer.IsCounting == false)
             {
                 _energyManager.PauseElements();
-                // 軌跡を消す
-                _trajectory.DeleteTrajectoyRoot();
-
+                
                 _gameState = State.Over;
                 // 表示、非表示
                 _overtext.gameObject.SetActive(true);
