@@ -52,22 +52,29 @@ public class ElementChecker : MonoBehaviour {
 
     void OnTriggerEnter2D(Collider2D other)
     {
-        if (FirstElement == null)
+        if (other.gameObject.tag == "Element")
         {
-            FirstElement = other.gameObject;
-        }
-        else if (other.gameObject != FirstElement)
-        {
-            SecondElement = other.gameObject;
+
+            if (FirstElement == null)
+            {
+                FirstElement = other.gameObject;
+            }
+            else if (other.gameObject != FirstElement)
+            {
+                SecondElement = other.gameObject;
+            }
         }
     }
 
 
     void OnTriggerStay2D(Collider2D other)
     {
-        if (FirstElement == null)
+        if (other.gameObject.tag == "Element")
         {
-            FirstElement = other.gameObject;
+            if (FirstElement == null)
+            {
+                FirstElement = other.gameObject;
+            }
         }
         
     }
