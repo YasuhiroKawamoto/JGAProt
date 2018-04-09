@@ -30,10 +30,11 @@ namespace Play.Enemy
         // 移動tween
         Tweener _moveTween = null;
 
+        
+
         // Use this for initialization
         void Start()
         {
-
             //エレメントを探す
             base.SearchElement();
             _HP = _hp;
@@ -43,7 +44,10 @@ namespace Play.Enemy
         // Update is called once per frame
         void Update()
         {
-
+            if(PlayManager.Instance.GameManager.GameState != InGameManager.State.Play)
+            {
+                return;
+            }
            
             //範囲内なら攻撃
             if (InRange() == false)
@@ -55,8 +59,6 @@ namespace Play.Enemy
                 }
                 Attack();
             }
-
-            
         }
 
         //攻撃 
@@ -80,6 +82,11 @@ namespace Play.Enemy
                 //エレメントの攻撃関数を受け取る
                 nearestElement.GetComponent<Element.Element>().ReceiveDamage(_damage);
                 _timeCnt = 0.0f;
+
+                //　アタック後ランダムなエレメントへ移動
+                //エレメントを探す
+                base.SearchRandomElement();
+                Move();
             }
         }
 
