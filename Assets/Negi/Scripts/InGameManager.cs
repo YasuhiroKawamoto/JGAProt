@@ -22,6 +22,10 @@ namespace Play
         [SerializeField]
         private float _playTime = 10.0f;
 
+        // 撃破目標数
+        [SerializeField]
+        private int _killTarget = 10;
+
         // タイマー
         [SerializeField]
         private Timer.PlayTimer _timer;
@@ -33,6 +37,9 @@ namespace Play
         // ゲームオーバーテキスト
         [SerializeField]
         private Text _overtext;
+
+        [SerializeField]
+        private Text _cleartext;
 
         // 現在の状態
         [SerializeField,ReadOnly]
@@ -71,6 +78,7 @@ namespace Play
             _resetList = new List<GameObject>();
 
             // 表示、非表示
+            _cleartext.gameObject.SetActive(false);
             _overtext.gameObject.SetActive(false);
             _startButton.gameObject.SetActive(true);
 
@@ -107,8 +115,11 @@ namespace Play
             _gameState = State.Play;
             _timer.StartTimer(_playTime);
 
+            EnemyManager.Instance.ResetKills();
+
             // 非表示
             _overtext.gameObject.SetActive(false);
+            _cleartext.gameObject.SetActive(false);
             _startButton.gameObject.SetActive(false);
 
             // TODO: のちほど分ける ==================================================
@@ -149,6 +160,15 @@ namespace Play
         private void CheckGameClear()
         {
             // TODO: ここにクリア確認
+            if(_killTarget <EnemyManager.Instance.GetKills())
+            {
+                _energyManager.PauseElements();
+
+                _gameState = State.Over;
+                // 表示、非表示
+                _cleartext.gameObject.SetActive(true);
+                _startButton.gameObject.SetActive(true);
+            }
         }
 
         /// <summary>

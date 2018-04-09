@@ -82,10 +82,15 @@ namespace Play.Enemy
 
             List<GameObject> Elements = new List<GameObject>(GameObject.FindGameObjectsWithTag("Element"));
 
-            var random = Random.Range(0, Elements.Count);
+            Element.Element element = null;
+
+            do{
+                var random = Random.Range(0, Elements.Count);
+                element = Elements[random].GetComponent<Element.Element>();
+            } while (element.IsBase());
 
             //座標の値を入れる
-            _ElementPos = Elements[random].transform.position;
+            _ElementPos = element.transform.position;
         }
 
         //エフェクトの生成

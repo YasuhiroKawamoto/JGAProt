@@ -54,7 +54,7 @@ namespace Play.Element
             //軌跡マネージャの取得
             _trajectoryManager = GameObject.Find("TrajectoryMan");
             //チャージ量設定
-            _chargeAmount = 5;
+            _chargeAmount = 1;
             //レイヤーマスク作成
             //対応レイヤーの管理番号を取得
             _layerNo = LayerMask.NameToLayer("Default");

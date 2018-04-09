@@ -80,6 +80,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_range: 1
+  _damage: 3
   _hp: 10
   _attackEffect: {fileID: 1221203389330830, guid: 1385bbb40a2dd904db7d02349f8ae61e,
     type: 2}

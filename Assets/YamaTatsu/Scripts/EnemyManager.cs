@@ -19,4 +19,9 @@ public class EnemyManager : SingletonMonoBehaviour<EnemyManager>
         _enemyCnt += 1;
     }
 
+    public void ResetKills()
+    {
+        _enemyCnt = 0;
+    }
+
 }
