@@ -198,7 +198,11 @@ namespace Play.Trajectory
 
         public void DeleteTrajectoyRoot()
         {
-            Destroy(_trajectoryRootValue);
+            if(_trajectoryRootValue != null)
+            {
+                Destroy(_trajectoryRootValue);
+            }
         }
     }
 }
+            
