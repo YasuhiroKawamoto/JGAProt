@@ -57,6 +57,11 @@ namespace Play
         // リセットするとき削除するオブジェクト
         private List<GameObject> _resetList = null;
 
+        public void SetResetObject(GameObject obj)
+        {
+            _resetList.Add(obj);
+        }
+
         /// <summary>
         /// 初期化処理
         /// </summary>
