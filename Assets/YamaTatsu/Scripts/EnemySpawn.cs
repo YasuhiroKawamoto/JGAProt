@@ -15,12 +15,18 @@ public class EnemySpawn : MonoBehaviour {
     //数えるカウント
     private float timeOut;
 
-    //最大数
+    //xの最大数
     [SerializeField]
-    int maxNum;
-    //最小数
+    int maxNumX;
+    //xの最小数
     [SerializeField]
-    int minNum;
+    int minNumX;
+    //yの最大数
+    [SerializeField]
+    int maxNumY;
+    //yの最小数
+    [SerializeField]
+    int minNumY;
 
     // Use this for initialization
     void Start()
@@ -50,8 +56,8 @@ public class EnemySpawn : MonoBehaviour {
         for (int i = 0; i < ENEMY_NUM; i++)
         {
             //　出現させる位置をランダムに選ぶ
-            float randomValueX = Random.Range(minNum, maxNum);
-            float randomValueY = Random.Range(minNum, maxNum);
+            float randomValueX = Random.Range(minNumX, maxNumX);
+            float randomValueY = Random.Range(minNumY, maxNumY);
             //敵の生成
             GameObject enemy = Instantiate(enemies) as GameObject;
             //位置をセット
