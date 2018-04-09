@@ -1404,10 +1404,12 @@ MonoBehaviour:
   _sendTargetList: []
   _state: 0
   _normalSprite: {fileID: 21300000, guid: 3697019c0c0620c4f9dc9c3d72b24326, type: 3}
-  _damageSprite1: {fileID: 0}
-  _damageSprite2: {fileID: 0}
-  _damageSprite3: {fileID: 0}
-  _breakSprite: {fileID: 0}
+  _breakSprite1: {fileID: 21300000, guid: 73896b950442c394e96148b635ad5432, type: 3}
+  _breakSprite2: {fileID: 21300000, guid: ffd6797c41658884bbd3455324777e11, type: 3}
+  _breakSprite3: {fileID: 21300000, guid: edf97bdc052b7ca46aa41ee40b528448, type: 3}
+  _breakSprite4: {fileID: 21300000, guid: c23da3465342bd749aaa365fbf3afb58, type: 3}
+  _fullBreakSprite: {fileID: 21300000, guid: 2367637bdbe108c47852627b87b3902d, type: 3}
+  _cilldrenList: []
 --- !u!114 &114126488221814414
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1428,10 +1430,12 @@ MonoBehaviour:
   _sendTargetList: []
   _state: 0
   _normalSprite: {fileID: 0}
-  _damageSprite1: {fileID: 0}
-  _damageSprite2: {fileID: 0}
-  _damageSprite3: {fileID: 0}
-  _breakSprite: {fileID: 0}
+  _breakSprite1: {fileID: 0}
+  _breakSprite2: {fileID: 0}
+  _breakSprite3: {fileID: 0}
+  _breakSprite4: {fileID: 0}
+  _fullBreakSprite: {fileID: 0}
+  _cilldrenList: []
 --- !u!114 &114188118650180976
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1486,16 +1490,18 @@ MonoBehaviour:
   _isBase: 0
   _isRecovery: 0
   _recoveryTime: 0
-  _energy: 0
+  _energy: 15
   _capacity: 0
   _durability: 0
   _sendTargetList: []
   _state: 0
   _normalSprite: {fileID: 21300000, guid: 3697019c0c0620c4f9dc9c3d72b24326, type: 3}
-  _damageSprite1: {fileID: 0}
-  _damageSprite2: {fileID: 0}
-  _damageSprite3: {fileID: 0}
-  _breakSprite: {fileID: 0}
+  _breakSprite1: {fileID: 21300000, guid: 73896b950442c394e96148b635ad5432, type: 3}
+  _breakSprite2: {fileID: 21300000, guid: ffd6797c41658884bbd3455324777e11, type: 3}
+  _breakSprite3: {fileID: 21300000, guid: edf97bdc052b7ca46aa41ee40b528448, type: 3}
+  _breakSprite4: {fileID: 21300000, guid: c23da3465342bd749aaa365fbf3afb58, type: 3}
+  _fullBreakSprite: {fileID: 21300000, guid: 2367637bdbe108c47852627b87b3902d, type: 3}
+  _cilldrenList: []
 --- !u!114 &114327876115044656
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1588,16 +1594,18 @@ MonoBehaviour:
   _isBase: 0
   _isRecovery: 0
   _recoveryTime: 0
-  _energy: 0
+  _energy: 15
   _capacity: 0
   _durability: 0
   _sendTargetList: []
   _state: 0
   _normalSprite: {fileID: 21300000, guid: 3697019c0c0620c4f9dc9c3d72b24326, type: 3}
-  _damageSprite1: {fileID: 0}
-  _damageSprite2: {fileID: 0}
-  _damageSprite3: {fileID: 0}
-  _breakSprite: {fileID: 0}
+  _breakSprite1: {fileID: 21300000, guid: 73896b950442c394e96148b635ad5432, type: 3}
+  _breakSprite2: {fileID: 21300000, guid: ffd6797c41658884bbd3455324777e11, type: 3}
+  _breakSprite3: {fileID: 21300000, guid: edf97bdc052b7ca46aa41ee40b528448, type: 3}
+  _breakSprite4: {fileID: 21300000, guid: c23da3465342bd749aaa365fbf3afb58, type: 3}
+  _fullBreakSprite: {fileID: 21300000, guid: 2367637bdbe108c47852627b87b3902d, type: 3}
+  _cilldrenList: []
 --- !u!114 &114487675860446792
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1618,10 +1626,12 @@ MonoBehaviour:
   _sendTargetList: []
   _state: 0
   _normalSprite: {fileID: 21300000, guid: 3697019c0c0620c4f9dc9c3d72b24326, type: 3}
-  _damageSprite1: {fileID: 0}
-  _damageSprite2: {fileID: 0}
-  _damageSprite3: {fileID: 0}
-  _breakSprite: {fileID: 0}
+  _breakSprite1: {fileID: 21300000, guid: 73896b950442c394e96148b635ad5432, type: 3}
+  _breakSprite2: {fileID: 21300000, guid: ffd6797c41658884bbd3455324777e11, type: 3}
+  _breakSprite3: {fileID: 21300000, guid: edf97bdc052b7ca46aa41ee40b528448, type: 3}
+  _breakSprite4: {fileID: 21300000, guid: c23da3465342bd749aaa365fbf3afb58, type: 3}
+  _fullBreakSprite: {fileID: 21300000, guid: 2367637bdbe108c47852627b87b3902d, type: 3}
+  _cilldrenList: []
 --- !u!114 &114548210243957124
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1718,8 +1728,8 @@ MonoBehaviour:
   ENEMY_NUM: 5
   enemies: {fileID: 1115130713092294, guid: 6f8a58a8037c472408160c50ecd50916, type: 2}
   setTime: 5
-  maxNum: 5
-  minNum: -5
+  maxNum: 0
+  minNum: 0
 --- !u!114 &114893578334690458
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1762,10 +1772,12 @@ MonoBehaviour:
   _sendTargetList: []
   _state: 0
   _normalSprite: {fileID: 21300000, guid: 3697019c0c0620c4f9dc9c3d72b24326, type: 3}
-  _damageSprite1: {fileID: 0}
-  _damageSprite2: {fileID: 0}
-  _damageSprite3: {fileID: 0}
-  _breakSprite: {fileID: 0}
+  _breakSprite1: {fileID: 21300000, guid: 73896b950442c394e96148b635ad5432, type: 3}
+  _breakSprite2: {fileID: 21300000, guid: ffd6797c41658884bbd3455324777e11, type: 3}
+  _breakSprite3: {fileID: 21300000, guid: edf97bdc052b7ca46aa41ee40b528448, type: 3}
+  _breakSprite4: {fileID: 21300000, guid: c23da3465342bd749aaa365fbf3afb58, type: 3}
+  _fullBreakSprite: {fileID: 21300000, guid: 2367637bdbe108c47852627b87b3902d, type: 3}
+  _cilldrenList: []
 --- !u!212 &212253166035498790
 SpriteRenderer:
   m_ObjectHideFlags: 1
