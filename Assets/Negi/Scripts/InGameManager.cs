@@ -8,7 +8,7 @@ namespace Play
     public class InGameManager : MonoBehaviour {
 
         // ゲームシーンの状態
-        enum State
+        public enum State
         {
             None,
             Play,
@@ -37,6 +37,10 @@ namespace Play
         // 現在の状態
         [SerializeField,ReadOnly]
         private State _gameState = State.None;
+        public State GameState {
+            get { return _gameState; }
+            private set { _gameState = value; }
+        }
 
         // エネルギーの管理クラス
         [SerializeField]
