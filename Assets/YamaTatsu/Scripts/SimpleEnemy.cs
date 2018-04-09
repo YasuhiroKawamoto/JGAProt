@@ -75,7 +75,8 @@ namespace Play.Enemy
                 }
 
                 //攻撃のSEを入れるところ
-
+                //ヒットした時にSEを入れるところ
+                SoundManager.Instance.Play("EnemyAttack");
                 //エレメントの攻撃関数を受け取る
                 nearestElement.GetComponent<Element.Element>().ReceiveDamage(_damage);
                 _timeCnt = 0.0f;
@@ -109,7 +110,7 @@ namespace Play.Enemy
         public override void Damage(int damage)
         {
             //ヒットした時にSEを入れるところ
-
+            //SoundManager.Instance.Play("EnemyDamage");
             //
             base.Damage(damage);
             //HPが0になった場合破壊する
@@ -119,6 +120,8 @@ namespace Play.Enemy
                 if (_dieEffect != null)
                 {
                     //死ぬときのSEを入れるところ
+                    //ヒットした時にSEを入れるところ
+                    SoundManager.Instance.Play("EnemyDie");
                     base.SpawnEffect(_dieEffect, transform.position);
                 }
                 Destroy(this.gameObject);
